@@ -3,13 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Sae } from 'react-native-textinput-effects';
 
-class Signup extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
       name: null,
       email: null,
-      password: null,
     };
   }
 
@@ -18,23 +17,12 @@ class Signup extends Component {
       <View style={styles.total}>
         <View style={styles.AppName}>
           <Text style={{ fontSize: 50 }}>
-            Trello!
+            Hi!
           </Text>
         </View>
         <View style={styles.Inputs}>
           <Sae
           label="Email"
-          iconClass={FontAwesomeIcon}
-          iconName="pencil"
-          iconColor="white"
-          inputPadding={16}
-          labelHeight={24}
-          borderHeight={2}
-          autoCapitalize="none"
-          autoCorrect={false}
-          />
-          <Sae
-          label="Name"
           iconClass={FontAwesomeIcon}
           iconName="pencil"
           iconColor="white"
@@ -66,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   AppName: {
-    flex: 6,
+    flex: 4,
     backgroundColor: 'green',
     alignItems: 'center',
     justifyContent: 'center',
@@ -78,4 +66,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-export default Signup;
+export default Login;
