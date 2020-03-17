@@ -1,57 +1,79 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { Sae } from 'react-native-textinput-effects';
+import {
+  View, Text, StyleSheet, TouchableOpacity, alert,
+} from 'react-native';
+import { Hoshi } from 'react-native-textinput-effects';
+import axios from 'axios';
+import { Button } from 'react-native-elements';
+import Alert from 'react-native-awesome-alerts';
 
 class Login extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      name: null,
+      password: null,
       email: null,
     };
   }
 
+  saveInfo(key, value) {
+    this.setState({
+      [key]: value,
+    });
+  }
+
+  serverConnect() {
+    if (this.state.email === null || this.state.password !== null) {
+
+    } else {
+      axios('server', this.state);
+    }
+  }
+
   render() {
     return (
-      <View style={styles.total}>
+        <View style={styles.total}>
         <View style={styles.AppName}>
-          <Text style={{ fontSize: 50 }}>
+            <Text style={{ fontSize: 50 }}>
             Hi!
-          </Text>
+            </Text>
         </View>
         <View style={styles.Inputs}>
-          <Sae
-          label="Email"
-          iconClass={FontAwesomeIcon}
-          iconName="pencil"
-          iconColor="white"
-          inputPadding={16}
-          labelHeight={24}
-          borderHeight={2}
-          autoCapitalize="none"
-          autoCorrect={false}
-          />
-          <Sae
-          label="Password"
-          iconClass={FontAwesomeIcon}
-          iconName="pencil"
-          iconColor="white"
-          inputPadding={16}
-          labelHeight={24}
-          borderHeight={2}
-          autoCapitalize="none"
-          autoCorrect={false}
-          />
+            <Hoshi
+            label="Email"
+            borderColor="#b76c94"
+            borderHeight={3}
+            inputPadding={16}
+            onChange={(text) => this.saveInfo('email', text)}
+            style={{ height: 10, width: 350 }}
+            />
+            <Hoshi
+            label="Password"
+            borderColor="#b76c94"
+            style={{ height: 10, width: 350, marginBottom: 15 }}
+            borderHeight={3}
+            onChange={(text) => this.saveInfo('password', text)}
+            inputPadding={16} />
+            <View style={{ flexDirection: 'row' }}>
+            <Button
+            title="로그인"
+            type="outline"
+            buttonStyle={{ width: 90, height: 40 }}
+            onPress={this.serverConnect} />
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Signup Screen')}>
+                <Text>
+                    회원가입
+                </Text>
+            </TouchableOpacity>
+            </View>
         </View>
-      </View>
+        </View>
     );
   }
 }
 const styles = StyleSheet.create({
   total: {
     flex: 1,
-    backgroundColor: 'red',
   },
   AppName: {
     flex: 4,
@@ -61,7 +83,6 @@ const styles = StyleSheet.create({
   },
   Inputs: {
     flex: 5,
-    backgroundColor: 'blue',
     alignItems: 'center',
     justifyContent: 'center',
   },

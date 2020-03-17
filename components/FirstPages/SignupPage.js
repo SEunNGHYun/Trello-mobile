@@ -1,16 +1,29 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { Sae } from 'react-native-textinput-effects';
+import {
+  View, Text, StyleSheet, KeyboardAvoidingView, TouchableOpacity,
+} from 'react-native';
+import { Button } from 'react-native-elements';
+import { Hoshi } from 'react-native-textinput-effects';
+import Axios from 'axios';
 
 class Signup extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       name: null,
       email: null,
       password: null,
     };
+  }
+
+  saveInfo(key, value) {
+    this.setState({
+      [key]: value,
+    });
+  }
+
+  signupPressButton() {
+    Axios('server', this.state);
   }
 
   render() {
@@ -22,39 +35,44 @@ class Signup extends Component {
           </Text>
         </View>
         <View style={styles.Inputs}>
-          <Sae
-          label="Email"
-          iconClass={FontAwesomeIcon}
-          iconName="pencil"
-          iconColor="white"
-          inputPadding={16}
-          labelHeight={24}
-          borderHeight={2}
-          autoCapitalize="none"
-          autoCorrect={false}
+        <KeyboardAvoidingView behavior="position">
+        <Hoshi
+            label="Name"
+            borderColor="#b76c94"
+            style={{
+              height: 7.5, width: 350, marginBottom: 7.5,
+            }}
+            borderHeight={3}
+            onChange={(text) => this.saveInfo('name', text)}
+            inputPadding={16}
           />
-          <Sae
-          label="Name"
-          iconClass={FontAwesomeIcon}
-          iconName="pencil"
-          iconColor="white"
-          inputPadding={16}
-          labelHeight={24}
-          borderHeight={2}
-          autoCapitalize="none"
-          autoCorrect={false}
-          />
-          <Sae
-          label="Password"
-          iconClass={FontAwesomeIcon}
-          iconName="pencil"
-          iconColor="white"
-          inputPadding={16}
-          labelHeight={24}
-          borderHeight={2}
-          autoCapitalize="none"
-          autoCorrect={false}
-          />
+         <Hoshi
+            label="Email"
+            borderColor="#b76c94"
+            style={{ height: 7.5, width: 350, marginBottom: 7 }}
+            borderHeight={3}
+            onChange={(text) => this.saveInfo('email', text)}
+            inputPadding={16} />
+         <Hoshi
+            label="Password"
+            borderColor="#b76c94"
+            style={{ height: 7.5, width: 350, marginBottom: 13 }}
+            borderHeight={3}
+            onChange={(text) => this.saveInfo('password', text)}
+            inputPadding={16} />
+            <View style={{ flexDirection: 'row' }}>
+            <Button
+            title="회원가입"
+            type="outline"
+            buttonStyle={{ width: 90, height: 40 }}
+            onPress={() => this.signupPressButton} />
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Login Screen')}>
+              <Text>
+                로그인 페이지
+              </Text>
+            </TouchableOpacity>
+            </View>
+        </KeyboardAvoidingView>
         </View>
       </View>
     );
@@ -63,17 +81,15 @@ class Signup extends Component {
 const styles = StyleSheet.create({
   total: {
     flex: 1,
-    backgroundColor: 'red',
   },
   AppName: {
-    flex: 4,
-    backgroundColor: 'green',
+    flex: 3,
+    backgroundColor: 'aqua',
     alignItems: 'center',
     justifyContent: 'center',
   },
   Inputs: {
     flex: 5,
-    backgroundColor: 'blue',
     alignItems: 'center',
     justifyContent: 'center',
   },
