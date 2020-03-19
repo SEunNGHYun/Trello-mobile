@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity, alert,
+  View, Text, StyleSheet, TouchableOpacity, AsyncStorage,
 } from 'react-native';
-import { Hoshi } from 'react-native-textinput-effects';
+import { Isao } from 'react-native-textinput-effects';
 import axios from 'axios';
 import { Button } from 'react-native-elements';
 import Alert from 'react-native-awesome-alerts';
+import { server } from '../utils/server';
 
 class Login extends Component {
   constructor(props) {
@@ -13,20 +14,27 @@ class Login extends Component {
     this.state = {
       password: null,
       email: null,
+      errAlert: false,
+      successAlert: false,
     };
+    this.serverConnect = this.serverConnect.bind(this);
   }
 
-  saveInfo(key, value) {
-    this.setState({
-      [key]: value,
-    });
-  }
 
   serverConnect() {
-    if (this.state.email === null || this.state.password !== null) {
-
+    const { email, password } = this.state;
+    if (this.state.email === null || this.state.password === null) {
     } else {
-      axios('server', this.state);
+      axios.post(`${server}/user/login`, { email, password })
+        .then((res) => {
+          if (res.status === 201) {
+            AsyncStorage.setItem('user_Token', res.data.token);
+          } else {
+            this.setState({
+              errAlert: false,
+            });
+          }
+        });
     }
   }
 
@@ -39,21 +47,26 @@ class Login extends Component {
             </Text>
         </View>
         <View style={styles.Inputs}>
-            <Hoshi
-            label="Email"
-            borderColor="#b76c94"
-            borderHeight={3}
-            inputPadding={16}
-            onChange={(text) => this.saveInfo('email', text)}
-            style={{ height: 10, width: 350 }}
-            />
-            <Hoshi
-            label="Password"
-            borderColor="#b76c94"
-            style={{ height: 10, width: 350, marginBottom: 15 }}
-            borderHeight={3}
-            onChange={(text) => this.saveInfo('password', text)}
-            inputPadding={16} />
+        <Isao
+                label="Email"
+                style={{ width: 330, marginTop: 15 }}
+                activeColor="#da7071"
+                borderHeight={8}
+                inputPadding={16}
+                labelHeight={24}
+                passiveColor="black"
+                onChangeText={(text) => this.setState({ email: text })}
+          />
+            <Isao
+                label="Password"
+                style={{ width: 330, marginBottom: 10 }}
+                activeColor="#da7071"
+                borderHeight={8}
+                inputPadding={16}
+                labelHeight={24}
+                passiveColor="black"
+                onChangeText={(text) => this.setState({ password: text })}
+          />
             <View style={{ flexDirection: 'row' }}>
             <Button
             title="로그인"
@@ -66,6 +79,14 @@ class Login extends Component {
                 </Text>
             </TouchableOpacity>
             </View>
+            <Alert
+        show={this.state.FailAlert}
+        title="회원가입 실패"
+        message="회원가입을 실패하였습니다."
+        confirmText="회원가입 다시 하기"
+        onConfirmPressed={() => this.setState({
+          FailAlert: false, email: null, password: null,
+        })} />
         </View>
         </View>
     );

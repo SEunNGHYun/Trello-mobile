@@ -3,8 +3,10 @@ import {
   View, Text, StyleSheet, KeyboardAvoidingView, TouchableOpacity,
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { Hoshi } from 'react-native-textinput-effects';
+import { Isao } from 'react-native-textinput-effects';
 import Axios from 'axios';
+import Alert from 'react-native-awesome-alerts';
+import { server } from '../utils/server';
 
 class Signup extends Component {
   constructor(props) {
@@ -13,17 +15,36 @@ class Signup extends Component {
       name: null,
       email: null,
       password: null,
+      SuccessAlert: false,
+      FailAlert: false,
     };
+    this.signupAfter = this.signupAfter.bind(this);
+    this.signupPressButton = this.signupPressButton.bind(this);
   }
 
-  saveInfo(key, value) {
+  signupAfter() {
     this.setState({
-      [key]: value,
+      SuccessAlert: false,
     });
+    return this.props.navigation.navigate('Login Screen');
   }
 
   signupPressButton() {
-    Axios('server', this.state);
+    const { name, password, email } = this.state;
+    Axios.post(`${server}/user/signup`, {
+      data: {
+        name,
+        password,
+        email,
+      },
+    })
+      .then((res) => {
+        if (res.status === 201) {
+          this.setState({
+            SuccessAlert: true,
+          });
+        }
+      }).catch((err) => new Error(err));
   }
 
   render() {
@@ -36,36 +57,42 @@ class Signup extends Component {
         </View>
         <View style={styles.Inputs}>
         <KeyboardAvoidingView behavior="position">
-        <Hoshi
-            label="Name"
-            borderColor="#b76c94"
-            style={{
-              height: 7.5, width: 350, marginBottom: 7.5,
-            }}
-            borderHeight={3}
-            onChange={(text) => this.saveInfo('name', text)}
-            inputPadding={16}
+          <Isao
+                label="Name"
+                style={{ width: 330, marginTop: 15 }}
+                activeColor="#da7071"
+                borderHeight={8}
+                inputPadding={16}
+                labelHeight={24}
+                passiveColor="black"
+                onChangeText={(text) => this.setState({ name: text })}
           />
-         <Hoshi
-            label="Email"
-            borderColor="#b76c94"
-            style={{ height: 7.5, width: 350, marginBottom: 7 }}
-            borderHeight={3}
-            onChange={(text) => this.saveInfo('email', text)}
-            inputPadding={16} />
-         <Hoshi
-            label="Password"
-            borderColor="#b76c94"
-            style={{ height: 7.5, width: 350, marginBottom: 13 }}
-            borderHeight={3}
-            onChange={(text) => this.saveInfo('password', text)}
-            inputPadding={16} />
+          <Isao
+                label="Email"
+                activeColor="#da7071"
+                borderHeight={8}
+                style={{ width: 330 }}
+                inputPadding={16}
+                labelHeight={24}
+                passiveColor="black"
+                onChangeText={(text) => this.setState({ email: text })}
+            />
+            <Isao
+                label="Password"
+                style={{ width: 330, marginBottom: 20 }}
+                activeColor="#da7071"
+                borderHeight={8}
+                inputPadding={16}
+                labelHeight={24}
+                passiveColor="black"
+                onChangeText={(text) => this.setState({ password: text })}
+            />
             <View style={{ flexDirection: 'row' }}>
             <Button
             title="회원가입"
             type="outline"
             buttonStyle={{ width: 90, height: 40 }}
-            onPress={() => this.signupPressButton} />
+            onPress={() => this.signupPressButton()} />
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Login Screen')}>
               <Text>
                 로그인 페이지
@@ -74,6 +101,23 @@ class Signup extends Component {
             </View>
         </KeyboardAvoidingView>
         </View>
+        <Alert
+        show={this.state.SuccessAlert}
+        title="회원가입 성공"
+        message="성공적으로 회원가입 되었습니다."
+        showConfirmButton
+        confirmText="로그인 하러 가기"
+        confirmButtonColor="blue"
+        onConfirmPressed={() => this.signupAfter()} />
+        <Alert
+        show={this.state.FailAlert}
+        title="회원가입 실패"
+        message="회원가입을 실패하였습니다."
+        confirmText="회원가입 다시 하기"
+        onConfirmPressed={() => this.setState({
+          FailAlert: false, email: null, password: null, name: null,
+        })}
+        />
       </View>
     );
   }
