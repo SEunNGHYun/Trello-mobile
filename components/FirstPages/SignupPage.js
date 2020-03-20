@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, KeyboardAvoidingView, TouchableOpacity,
+  View, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Isao } from 'react-native-textinput-effects';
@@ -56,7 +56,6 @@ class Signup extends Component {
           </Text>
         </View>
         <View style={styles.Inputs}>
-        <KeyboardAvoidingView behavior="position">
           <Isao
                 label="Name"
                 style={{ width: 330, marginTop: 15 }}
@@ -99,7 +98,6 @@ class Signup extends Component {
               </Text>
             </TouchableOpacity>
             </View>
-        </KeyboardAvoidingView>
         </View>
         <Alert
         show={this.state.SuccessAlert}

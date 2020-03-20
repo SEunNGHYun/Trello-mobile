@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 
-function FirstPage({ navigation }) {
-  return (
+class FirstPage extends React.Component {
+
+  render() {
+    return (
     <View style={styles.total}>
       <View style={styles.AppName}>
         <Text style={{ fontSize: 50 }}>
@@ -17,18 +19,19 @@ function FirstPage({ navigation }) {
           title="로그인"
           containerStyle={{ width: 110, height: 45, margin: 10 }}
           titleStyle={{ fontSize: 25 }}
-          onPress={() => navigation.navigate('Login Screen')}
+          onPress={() => this.props.navigation.navigate('Login Screen')}
           />
         <Button
           type="OutLine"
           title="회원가입"
           containerStyle={{ width: 110, height: 45, margin: 10 }}
           titleStyle={{ fontSize: 25 }}
-          onPress={() => navigation.navigate('Signup Screen')}
+          onPress={() => this.props.navigation.navigate('Signup Screen')}
           />
       </View>
     </View>
-  );
+    );
+  }
 }
 const styles = StyleSheet.create({
   total: {
