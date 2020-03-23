@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, AsyncStorage,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Isao } from 'react-native-textinput-effects';
 import axios from 'axios';
 import { Button } from 'react-native-elements';
 import Alert from 'react-native-awesome-alerts';
+import { saveTokenInStore } from '../Redux/Reducer';
 import { server } from '../utils/server';
 
 class Login extends Component {
@@ -14,7 +16,7 @@ class Login extends Component {
     this.state = {
       password: null,
       email: null,
-      errAlert: false,
+      loginFailAlert: false,
       successAlert: false,
     };
     this.serverConnect = this.serverConnect.bind(this);
@@ -24,11 +26,15 @@ class Login extends Component {
   serverConnect() {
     const { email, password } = this.state;
     if (this.state.email === null || this.state.password === null) {
+      this.setState({
+        loginFailAlert: true,
+      });
     } else {
       axios.post(`${server}/user/login`, { email, password })
-        .then((res) => {
+        .then(async (res) => {
           if (res.status === 201) {
-            AsyncStorage.setItem('user_Token', res.data.token);
+            await AsyncStorage.setItem('user_Token', res.data.token);
+            this.props.Savetoken();
           } else {
             this.setState({
               errAlert: false,
@@ -39,6 +45,7 @@ class Login extends Component {
   }
 
   render() {
+    console.log('this.props', this.props.Savetoken);
     return (
         <View style={styles.total}>
         <View style={styles.AppName}>
@@ -80,12 +87,12 @@ class Login extends Component {
             </TouchableOpacity>
             </View>
             <Alert
-        show={this.state.FailAlert}
-        title="회원가입 실패"
-        message="회원가입을 실패하였습니다."
-        confirmText="회원가입 다시 하기"
+        show={this.state.loginFailAlert}
+        title="로그인 실패"
+        message="로그인에 실패하였습니다."
+        confirmText="로그인 다시 하기"
         onConfirmPressed={() => this.setState({
-          FailAlert: false, email: null, password: null,
+          loginFailAlert: false, email: null, password: null,
         })} />
         </View>
         </View>
@@ -108,4 +115,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-export default Login;
+
+function mapStateToProps(state) {
+  return {
+    token: state.count,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    Savetoken: (token) => {
+      dispatch(saveTokenInStore(token));
+    },
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
