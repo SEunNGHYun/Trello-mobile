@@ -10,6 +10,8 @@ import { Provider } from 'react-redux';
 import Main from './components/Main';
 import Board from './components/Boards/Board';
 import Card from './components/Card';
+import MakeBoard from './components/MakeBoardAndCard/MakeBoard';
+import MakeCard from './components/MakeBoardAndCard/MakeCard';
 import Reducer from './components/Redux/Reducer';
 import Login from './components/FirstPages/LoginPage';
 import Signup from './components/FirstPages/SignupPage';
@@ -24,8 +26,8 @@ function StackHome() {
   return (
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Main} options={{ title: 'Home' }} />
-        <Stack.Screen name="Board" component={Board} options={{ title: 'Board' }} />
-        <Stack.Screen name="Card" component={Card} options={{ title: 'Card' }} />
+        <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ title: 'MakeBoard' }} />
+        <Stack.Screen name="MakeCard" component={MakeCard} options={{ title: 'MakeCard' }} />
       </Stack.Navigator>
   );
 }
@@ -51,10 +53,6 @@ export default class App extends Component {
     if (await AsyncStorage.getItem('user_Token')) {
       this.setState({
         Login: true,
-      });
-    } else {
-      this.setState({
-        Login: false,
       });
     }
   }

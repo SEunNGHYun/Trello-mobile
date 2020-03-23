@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 
-class FirstPage extends React.Component {
-
+class FirstPage extends Component {
   render() {
     return (
     <View style={styles.total}>

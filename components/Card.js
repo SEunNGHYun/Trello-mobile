@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function Card() {
+function Card() {
   return (
     <View>
       <Text>
@@ -10,3 +10,4 @@ export default function Card() {
     </View>
   );
 }
+export default Card;
