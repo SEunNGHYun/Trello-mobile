@@ -1,1 +1,1 @@
-export const boardlist = [{ id: 1, title: '공부' }, { id: 2, title: '이력서' }, { id: 3, title: '취업' }];
+export const boardlist = [{ id: 1, title: '공부' }, { id: 2, title: '이력서' }, { id: 3, title: '취업' }, { id: 4, title: '공부' }, { id: 5, title: '이력서' }, { id: 6, title: '취업' }, { id: 7, title: '공부' }, { id: 8, title: '이력서' }, { id: 9, title: '취업' }, { id: 10, title: '공부' }, { id: 11, title: '이력서' }, { id: 12, title: '취업' }, { id: 13, title: '공부' }, { id: 14, title: '이력서' }, { id: 15, title: '취업' }];
