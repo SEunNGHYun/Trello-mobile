@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, AsyncStorage, TouchableOpacity,
+  View, Text, StyleSheet, AsyncStorage,
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
-import { boardlist } from './fakedata';
 import { server } from './utils/server';
 
-class Main extends Component {
+class Home extends Component {
   constructor({ navigation }) {
     super(navigation);
     this.state = {
-      BoardList: [],
     };
   }
 
@@ -21,38 +19,21 @@ class Main extends Component {
     axios.get(`${server}/board/list`, { headers: { authorization: auth } })
       .then((res) => {
         if (res.status >= 200) {
-          this.setState({
-            BoardList: boardlist,
-          });
+          if (res.data.length > 0) {
+            return this.navigation.navigate('Boards');
+          }
         }
       });
   }
 
   render() {
-    const { BoardList } = this.state;
     return (
       <View style={styles.total}>
-        <View style={styles.Home}>
-          {BoardList.length > 0 ? (
-          <>
-          {BoardList.map((board) => (
-            <TouchableOpacity
-            style={styles.boardTitle}
-            onPress={() => this.props.navigation.navigate('Board', { id: board.id })}>
-            <Text
-            id={board.id}
-            style={{ fontSize: 20 }}>
-              {board.title}
-            </Text>
-            </TouchableOpacity>
-          ))}
-          </>
-          ) : (
-          <Text>
-            비어있습니다. board를 추가해주세요
-          </Text>
-          )}
-        </View>
+          <View style={styles.Homebox}>
+              <Text style={{ fontSize: 20 }}>
+                  보드를 만들어 보는 것은 어떨까요??
+              </Text>
+          </View>
         <ActionButton buttonColor="rgba(231,76,60,1)">
           <ActionButton.Item title="Board" buttonColor="#9b59b6" onPress={() => this.props.navigation.navigate('MakeBoard')}>
             <Icon name="archive" style={styles.buttons} />
@@ -69,11 +50,15 @@ class Main extends Component {
 const styles = StyleSheet.create({
   total: {
     flex: 1,
-    backgroundColor: 'green',
   },
-  boardTitle: {
-    margin: 10,
-
+  Homebox: {
+    width: 400,
+    height: 100,
+    margin: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0078D7',
+    borderRadius: 10,
   },
   buttons: {
     fontSize: 20,
@@ -85,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Main;
+export default Home;

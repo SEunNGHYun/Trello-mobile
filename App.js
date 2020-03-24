@@ -7,36 +7,29 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import Main from './components/Main';
 import Board from './components/Boards/Board';
-import Card from './components/Card';
+import Containers from './components/Containers';
 import MakeBoard from './components/MakeBoardAndCard/MakeBoard';
 import MakeCard from './components/MakeBoardAndCard/MakeCard';
 import Reducer from './components/Redux/Reducer';
 import Login from './components/FirstPages/LoginPage';
 import Signup from './components/FirstPages/SignupPage';
 import UserPage from './components/UserPage';
+import Home from './components/Home';
 import First from './components/FirstPages/FirstPage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const store = createStore(Reducer);
 
-function StackHome() {
+function StackBoard() {
   return (
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={Main} options={{ title: 'Home' }} />
+        <Stack.Screen name="Boards" component={Board} options={{ title: 'Boards' }} />
         <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ title: 'MakeBoard' }} />
         <Stack.Screen name="MakeCard" component={MakeCard} options={{ title: 'MakeCard' }} />
+        <Stack.Screen name="Containers" component={Containers} options={{ title: 'Card' }} />
       </Stack.Navigator>
-  );
-}
-function BoardStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Board" component={Board} options={{ title: 'Board' }} />
-      <Stack.Screen name="Card" component={Card} options={{ title: 'Card' }} />
-    </Stack.Navigator>
   );
 }
 
@@ -46,10 +39,10 @@ export default class App extends Component {
     this.state = {
       Login: false,
     };
-    this.ChangeState = this.ChangeState.bind(this);
+    this.ChangeLoginState = this.ChangeLoginState.bind(this);
   }
 
-  async ChangeState() {
+  async ChangeLoginState() {
     if (await AsyncStorage.getItem('user_Token')) {
       this.setState({
         Login: true,
@@ -58,15 +51,15 @@ export default class App extends Component {
   }
 
   render() {
-    this.ChangeState();
+    this.ChangeLoginState();
     return (
       <NavigationContainer>
       <SafeAreaProvider>
         <Provider store={store}>
         { this.state.Login ? (
             <Drawer.Navigator>
-                <Drawer.Screen name="Main" component={StackHome} />
-                <Drawer.Screen name="Board" component={BoardStack} />
+                <Drawer.Screen name="Home" component={Home} options={{ title: 'Home' }} />
+                <Drawer.Screen name="Boards" component={StackBoard} />
                 <Drawer.Screen name="UserInfo" component={UserPage} />
             </Drawer.Navigator>
         ) : (
