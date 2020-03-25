@@ -8,7 +8,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Board from './components/Boards/Board';
-import Containers from './components/Containers';
+import Containers from './components/Containers/Containers';
 import MakeBoard from './components/MakeBoardAndCard/MakeBoard';
 import MakeCard from './components/MakeBoardAndCard/MakeCard';
 import Reducer from './components/Redux/Reducer';
@@ -16,6 +16,7 @@ import Login from './components/FirstPages/LoginPage';
 import Signup from './components/FirstPages/SignupPage';
 import UserPage from './components/UserPage';
 import Home from './components/Home';
+import InBord from './components/Boards/InBoard';
 import First from './components/FirstPages/FirstPage';
 
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ const store = createStore(Reducer);
 function StackBoard() {
   return (
       <Stack.Navigator>
+        <Stack.Screen name="InBoard" component={InBord} />
         <Stack.Screen name="Boards" component={Board} options={{ title: 'Boards' }} />
         <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ title: 'MakeBoard' }} />
         <Stack.Screen name="MakeCard" component={MakeCard} options={{ title: 'MakeCard' }} />

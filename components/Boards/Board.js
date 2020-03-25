@@ -39,7 +39,7 @@ class Main extends Component {
           {BoardList.map((board) => (
             <TouchableOpacity
             style={styles.boardTitle}
-            onPress={() => this.props.navigation.navigate('Board', { id: board.id })}>
+            onPress={() => this.props.navigation.navigate('InBoard', { id: board.id })}>
             <View style={styles.box} />
             <Text
             id={board.id}
