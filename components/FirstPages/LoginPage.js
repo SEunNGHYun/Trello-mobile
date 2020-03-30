@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, AsyncStorage,
 } from 'react-native';
-import { connect } from 'react-redux';
 import { Isao } from 'react-native-textinput-effects';
 import axios from 'axios';
 import { Button } from 'react-native-elements';
 import Alert from 'react-native-awesome-alerts';
-import { saveTokenInStore } from '../Redux/Reducer';
 import { server } from '../utils/server';
 
 class Login extends Component {
@@ -115,17 +113,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-function mapStateToProps(state) {
-  return {
-    token: state.count,
-  };
-}
-function mapDispatchToProps(dispatch) {
-  return {
-    Savetoken: (token) => {
-      dispatch(saveTokenInStore(token));
-    },
-  };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;

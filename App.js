@@ -5,13 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+// import { createStore } from 'redux';
+// import { Provider } from 'react-redux';
 import Board from './components/Boards/Board';
 import Containers from './components/Containers/Containers';
 import MakeBoard from './components/MakeBoardAndCard/MakeBoard';
 import MakeCard from './components/MakeBoardAndCard/MakeCard';
-import Reducer from './components/Redux/Reducer';
+// import Reducer from './components/Redux/Reducer';
 import Login from './components/FirstPages/LoginPage';
 import Signup from './components/FirstPages/SignupPage';
 import UserPage from './components/UserPage';
@@ -22,7 +22,6 @@ import First from './components/FirstPages/FirstPage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const store = createStore(Reducer);
 
 function StackBoard() {
   return (
@@ -59,7 +58,6 @@ export default class App extends Component {
     return (
       <NavigationContainer>
       <SafeAreaProvider>
-        <Provider store={store}>
         { this.state.Login ? (
             <Drawer.Navigator>
                 <Drawer.Screen name="Home" component={Home} options={{ title: 'Home' }} />
@@ -77,7 +75,6 @@ export default class App extends Component {
             </>
           </Stack.Navigator>
         )}
-        </Provider>
       </SafeAreaProvider>
       </NavigationContainer>
     );
