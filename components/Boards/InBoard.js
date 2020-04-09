@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ScrollView, AsyncStorage,
 } from 'react-native';
 import Axios from 'axios';
-import { Button } from 'react-native-elemets';
+import { Button } from 'react-native-elements';
 import { server } from '../utils/server';
 import Containers from '../Containers/Containers';
 
@@ -37,7 +37,11 @@ class InBoard extends Component {
                <Button onPress={() => this.navigation.navigate('MakContainer')} />
                 </>
             )
-              : (<ScrollView />)}
+              : (
+              <ScrollView>
+                <Containers />
+              </ScrollView>
+              )}
         </View>
     );
   }
