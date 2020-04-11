@@ -32,7 +32,6 @@ class Login extends Component {
         .then(async (res) => {
           if (res.status === 201) {
             await AsyncStorage.setItem('user_Token', res.data.token);
-            this.props.Savetoken();
           } else {
             this.setState({
               errAlert: false,
@@ -43,7 +42,7 @@ class Login extends Component {
   }
 
   render() {
-    console.log('this.props', this.props.Savetoken);
+    console.log('this.props', this.props);
     return (
         <View style={styles.total}>
         <View style={styles.AppName}>
