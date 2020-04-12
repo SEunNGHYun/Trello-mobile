@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import 'react-native-gesture-handler';
 import { AsyncStorage } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -76,6 +77,12 @@ class Nav extends Component {
     );
   }
 }
+
+const mapStateToProps = ({ login }) => ({
+  Login: login,
+});
+
+
 // redux로 토큰을 저장 유무를 판단하여 로그인화면을 보여줄지 메인을 보여줄지 판단
 //
-export default connect()(Nav);
+export default connect(mapStateToProps)(Nav);
