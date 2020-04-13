@@ -11,7 +11,7 @@ export default function State(state = initalTokenStore, action) {
   switch (action.type) {
     case SaveToken:
       return {
-        SavetokenInStorage: !state.SavetokenInStorage,
+        SavetokenInStorage: true,
       };
     default:
       return state;

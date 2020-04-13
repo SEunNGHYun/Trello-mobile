@@ -6,17 +6,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Board from './components/Boards/Board';
-import Containers from './components/Containers/Containers';
-import MakeBoard from './components/MakeBoardAndCard/MakeBoard';
-import MakeCard from './components/MakeBoardAndCard/MakeCard';
-import Login from './components/FirstPages/LoginPage';
-import Signup from './components/FirstPages/SignupPage';
-import UserPage from './components/UserPage';
-import Home from './components/Home';
-import InBord from './components/Boards/InBoard';
-import MakContainer from './components/MakeContainer';
-import First from './components/FirstPages/FirstPage';
+import { saveTokenInStore } from './Redux/Reducer';
+import Board from './Boards/Board';
+import Containers from './Containers/Containers';
+import MakeBoard from './MakeBoardAndCard/MakeBoard';
+import MakeCard from './MakeBoardAndCard/MakeCard';
+import Login from './FirstPages/LoginPage';
+import Signup from './FirstPages/SignupPage';
+import UserPage from './UserPage';
+import Home from './Home';
+import InBord from './Boards/InBoard';
+import MakContainer from './MakeContainer';
+import First from './FirstPages/FirstPage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -44,18 +45,16 @@ class Nav extends Component {
 
   async componentDidMount() {
     if (await AsyncStorage.getItem('user_Token')) {
-      this.setState({
-        Login: true,
-      });
+      this.props.loginCheck();
     }
   }
 
   render() {
-    console.log('디버거 시작');
+    console.log('디버거 시작', this.state, this.props.Login);
     return (
       <NavigationContainer>
       <SafeAreaProvider>
-        { this.state.Login ? (
+        { this.props.Login ? (
             <Drawer.Navigator>
                 <Drawer.Screen name="Home" component={Home} options={{ title: 'Home' }} />
                 <Drawer.Screen name="Boards" component={StackBoard} />
@@ -78,11 +77,16 @@ class Nav extends Component {
   }
 }
 
-const mapStateToProps = ({ login }) => ({
-  Login: login,
+const mapStateToProps = ({ SavetokenInStorage }) => ({
+  Login: SavetokenInStorage,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  loginCheck: () => {
+    dispatch(saveTokenInStore());
+  },
+});
 
 // redux로 토큰을 저장 유무를 판단하여 로그인화면을 보여줄지 메인을 보여줄지 판단
 //
-export default connect(mapStateToProps)(Nav);
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);
