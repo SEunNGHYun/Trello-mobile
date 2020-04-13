@@ -4,8 +4,10 @@ import {
 } from 'react-native';
 import { Isao } from 'react-native-textinput-effects';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
 import Alert from 'react-native-awesome-alerts';
+import { saveTokenInStore } from '../Redux/Reducer';
 import { server } from '../utils/server';
 
 class Login extends Component {
@@ -32,6 +34,7 @@ class Login extends Component {
         .then(async (res) => {
           if (res.status === 201) {
             await AsyncStorage.setItem('user_Token', res.data.token);
+            this.props.loginCheck();
           } else {
             this.setState({
               errAlert: false,
@@ -42,7 +45,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log('this.props', this.props);
     return (
         <View style={styles.total}>
         <View style={styles.AppName}>
@@ -112,4 +114,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  loginCheck: () => {
+    dispatch(saveTokenInStore());
+  },
+});
+export default connect(null, mapDispatchToProps)(Login);
