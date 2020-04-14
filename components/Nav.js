@@ -16,7 +16,7 @@ import Signup from './FirstPages/SignupPage';
 import UserPage from './UserPage';
 import Home from './Home';
 import InBord from './Boards/InBoard';
-import MakContainer from './MakeContainer';
+import MakeContainer from './MakeContainer';
 import First from './FirstPages/FirstPage';
 
 const Stack = createStackNavigator();
@@ -25,12 +25,8 @@ const Drawer = createDrawerNavigator();
 function StackBoard() {
   return (
       <Stack.Navigator>
-        <Stack.Screen name="InBoard" component={InBord} />
-        <Stack.Screen name="Boards" component={Board} options={{ title: 'Boards' }} />
         <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ title: 'MakeBoard' }} />
         <Stack.Screen name="MakeCard" component={MakeCard} options={{ title: 'MakeCard' }} />
-        <Stack.Screen name="MakContainer" component={MakContainer} options={{ title: 'MakContainer' }} />
-        <Stack.Screen name="Containers" component={Containers} options={{ title: 'Card' }} />
       </Stack.Navigator>
   );
 }
