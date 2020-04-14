@@ -57,10 +57,10 @@ class Main extends Component {
         </View>
       </ScrollView>
         <ActionButton buttonColor="rgba(231,76,60,1)">
-          <ActionButton.Item title="Board" buttonColor="#9b59b6" onPress={() => this.props.navigation.navigate('MakeBoard')}>
-            <Icon name="archive" style={styles.buttons} />
+          <ActionButton.Item title="Board" buttonColor="#9b59b6" onPress={() => this.props.navigation.navigate('Boards', { screen: 'MakeBoard' })}>
+            <Icon name="ei-navicon" style={styles.buttons} />
           </ActionButton.Item>
-          <ActionButton.Item title="Card" buttonColor="#3498db" onPress={() => this.props.navigation.navigate('MakeCard')}>
+          <ActionButton.Item title="Card" buttonColor="#3498db" onPress={() => this.props.navigation.navigate('Boards', { screen: 'MakeCard' })}>
             <Icon name="ios-photos" style={styles.buttons} />
           </ActionButton.Item>
         </ActionButton>
