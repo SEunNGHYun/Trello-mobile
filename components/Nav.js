@@ -8,37 +8,40 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { saveTokenInStore } from './Redux/Reducer';
 import Board from './Boards/Board';
-import Containers from './Containers/Containers';
 import MakeBoard from './MakeBoardAndCard/MakeBoard';
 import MakeCard from './MakeBoardAndCard/MakeCard';
 import Login from './FirstPages/LoginPage';
 import Signup from './FirstPages/SignupPage';
 import UserPage from './UserPage';
 import Home from './Home';
-import InBord from './Boards/InBoard';
-import MakeContainer from './MakeContainer';
+import InBoard from './Boards/InBoard';
 import First from './FirstPages/FirstPage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+function StackHome() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }} />
+      <Stack.Screen name="InBoard" component={InBoard} />
+      <Stack.Screen name="MakeBoard" component={MakeBoard} />
+      <Stack.Screen name="MakeCard" component={MakeCard} />
+    </Stack.Navigator>
+  );
+}
 function StackBoard() {
   return (
       <Stack.Navigator>
-        <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ title: 'MakeBoard' }} />
-        <Stack.Screen name="MakeCard" component={MakeCard} options={{ title: 'MakeCard' }} />
+        <Stack.Screen name="Board" component={Board} />
+        <Stack.Screen name="InBoard" component={InBoard} />
+        <Stack.Screen name="MakeBoard" component={MakeBoard} />
+        <Stack.Screen name="MakeCard" component={MakeCard} />
       </Stack.Navigator>
   );
 }
 
 class Nav extends Component {
-  constructor() {
-    super();
-    this.state = {
-      Login: false,
-    };
-  }
-
   async componentDidMount() {
     if (await AsyncStorage.getItem('user_Token')) {
       this.props.loginCheck();
@@ -46,13 +49,12 @@ class Nav extends Component {
   }
 
   render() {
-    console.log('디버거 시작', this.state, this.props.Login);
     return (
       <NavigationContainer>
       <SafeAreaProvider>
         { this.props.Login ? (
             <Drawer.Navigator>
-                <Drawer.Screen name="Home" component={Home} options={{ title: 'Home' }} />
+                <Drawer.Screen name="Home" component={StackHome} />
                 <Drawer.Screen name="Boards" component={StackBoard} />
                 <Drawer.Screen name="UserInfo" component={UserPage} />
             </Drawer.Navigator>
@@ -60,11 +62,9 @@ class Nav extends Component {
           <Stack.Navigator screenOptions={{
             headerShown: false,
           }}>
-            <>
               <Stack.Screen name="First Screen" component={First} />
               <Stack.Screen name="Signup Screen" component={Signup} />
               <Stack.Screen name="Login Screen" component={Login} />
-            </>
           </Stack.Navigator>
         )}
       </SafeAreaProvider>
