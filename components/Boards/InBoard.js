@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, AsyncStorage,
+  View, Text, StyleSheet, ScrollView,
 } from 'react-native';
-import Axios from 'axios';
+import axios from 'axios';
+import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { server } from '../utils/server';
 import Containers from '../Containers/Containers';
@@ -16,8 +17,7 @@ class InBoard extends Component {
   }
 
   async componentDidMount() {
-    const auth = await AsyncStorage.getItem('user_Token');
-    Axios.get(`${server}/container?board_id=${this.props.id}`, { headers: { authorization: auth } })
+    axios.get(`${server}/container?board_id=${this.props.id}`, { headers: { authorization: this.props.token } })
       .then((Res) => {
         console.log('RES', Res);
         this.setState({
@@ -28,18 +28,13 @@ class InBoard extends Component {
 
   render() {
     return (
-        <View>
+        <View style={styles.total}>
             { this.state.Containers.length === 0 ? (
-                <>
-               <Text>
-                   비었습니다.
-               </Text>
-               <Button onPress={() => this.navigation.navigate('MakContainer')} />
-                </>
+              <Containers make={false} />
             )
               : (
               <ScrollView>
-                <Containers />
+                {this.state.Containers.map((container) => <Containers make contain={container} />)}
               </ScrollView>
               )}
         </View>
@@ -47,7 +42,12 @@ class InBoard extends Component {
   }
 }
 const styles = StyleSheet.create({
-
+  total: {
+    flex: 1,
+  },
+});
+const mapStateToProps = ({ token }) => ({
+  token,
 });
 
-export default InBoard;
+export default connect(mapStateToProps)(InBoard);

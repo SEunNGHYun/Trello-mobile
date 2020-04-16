@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, AsyncStorage, TouchableOpacity, ScrollView,
+  View, Text, StyleSheet, AsyncStorage, TouchableHighlight, ScrollView, alert,
 } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
+import BoardsTitle from './Boardtitle';
 import { boardlist } from '../fakedata';
 import { server } from '../utils/server';
 
@@ -28,6 +29,10 @@ class Main extends Component {
       });
   }
 
+  longPressButton = () => {
+    alert('LOOOOOOOOOOOOOOONNNNNNGGGGGGG');
+  }
+
   render() {
     const { BoardList } = this.state;
     return (
@@ -37,16 +42,11 @@ class Main extends Component {
           {BoardList.length > 0 ? (
           <>
           {BoardList.map((board) => (
-            <TouchableOpacity
-            style={styles.boardTitle}
-            onPress={() => this.props.navigation.navigate('InBoard', { id: board.id, name: board.title })}>
-            <View style={styles.box} />
-            <Text
-            id={board.id}
-            style={{ marginLeft: 10, fontSize: 20 }}>
-              {board.title}
-            </Text>
-            </TouchableOpacity>
+            <TouchableHighlight
+            onPress={() => this.props.navigation.navigate('InBoard', { id: board.id, name: board.title })}
+            onLongPress={this.longPressButton}>
+            <BoardsTitle title={board.title} id={board.id} />
+            </TouchableHighlight>
           ))}
           </>
           ) : (
@@ -72,18 +72,6 @@ class Main extends Component {
 const styles = StyleSheet.create({
   total: {
     flex: 1,
-  },
-  box: {
-    width: 50,
-    height: 50,
-    margin: 4,
-    backgroundColor: '#0078D7',
-    borderRadius: 10,
-  },
-  boardTitle: {
-    margin: 5,
-    alignItems: 'center',
-    flexDirection: 'row',
   },
   buttons: {
     fontSize: 20,

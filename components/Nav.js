@@ -6,14 +6,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { saveTokenInStore } from './Redux/Reducer';
+import { LoginAuth } from './Redux/Reducer';
 import Board from './Boards/Board';
-import MakeBoard from './MakeBoardAndCard/MakeBoard';
-import MakeCard from './MakeBoardAndCard/MakeCard';
+import MakeBoard from './MakeSeries/MakeBoard';
+import MakeCard from './MakeSeries/MakeCard';
 import Login from './FirstPages/LoginPage';
 import Signup from './FirstPages/SignupPage';
 import UserPage from './UserPage';
 import Home from './Home';
+import CPHs from './utils/CreatePageHeaders';
 import InBoard from './Boards/InBoard';
 import First from './FirstPages/FirstPage';
 
@@ -25,8 +26,8 @@ function StackHome() {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }} />
       <Stack.Screen name="InBoard" component={InBoard} />
-      <Stack.Screen name="MakeBoard" component={MakeBoard} />
-      <Stack.Screen name="MakeCard" component={MakeCard} />
+  <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
+      <Stack.Screen name="MakeCard" component={MakeCard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
     </Stack.Navigator>
   );
 }
@@ -35,20 +36,23 @@ function StackBoard() {
       <Stack.Navigator>
         <Stack.Screen name="Board" component={Board} />
         <Stack.Screen name="InBoard" component={InBoard} />
-        <Stack.Screen name="MakeBoard" component={MakeBoard} />
-        <Stack.Screen name="MakeCard" component={MakeCard} />
+        <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
+        <Stack.Screen name="MakeCard" component={MakeCard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
       </Stack.Navigator>
   );
 }
 
 class Nav extends Component {
   async componentDidMount() {
-    if (await AsyncStorage.getItem('user_Token')) {
+    const token = await AsyncStorage.getItem('user_Token');
+    if (token) {
       this.props.loginCheck();
+      this.props.SaveToken(token);
     }
   }
 
   render() {
+    console.log('this.props', this.props.Login);
     return (
       <NavigationContainer>
       <SafeAreaProvider>
@@ -79,7 +83,7 @@ const mapStateToProps = ({ SavetokenInStorage }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loginCheck: () => {
-    dispatch(saveTokenInStore());
+    dispatch(LoginAuth());
   },
 });
 
