@@ -7,7 +7,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
 import Alert from 'react-native-awesome-alerts';
-import { saveTokenInStore } from '../Redux/Reducer';
+import { saveTokenInStore, SaveToken } from '../Redux/Reducer';
 import { server } from '../utils/server';
 
 class Login extends Component {
@@ -33,8 +33,9 @@ class Login extends Component {
       axios.post(`${server}/user/login`, { email, password })
         .then(async (res) => {
           if (res.status === 201) {
-            await AsyncStorage.setItem('user_Token', res.data.token);
             this.props.loginCheck();
+            this.props.SaveToken(res.data.token);
+            await AsyncStorage.setItem('user_Token', res.data.token);
           } else {
             this.setState({
               errAlert: false,
@@ -117,6 +118,9 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch) => ({
   loginCheck: () => {
     dispatch(saveTokenInStore());
+  },
+  SaveToken: () => {
+    dispatch(SaveToken());
   },
 });
 export default connect(null, mapDispatchToProps)(Login);
