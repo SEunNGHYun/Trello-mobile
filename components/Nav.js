@@ -24,20 +24,20 @@ const Drawer = createDrawerNavigator();
 function StackHome() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }} />
+      <Stack.Screen name="Home" component={Home} options={{ headerTitle: (props) => <CPHs {...props} title="Home" /> }} />
       <Stack.Screen name="InBoard" component={InBoard} />
-  <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
-      <Stack.Screen name="MakeCard" component={MakeCard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
+      <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ headerTitle: (props) => <CPHs {...props} title="create Board" /> }} />
+      <Stack.Screen name="MakeCard" component={MakeCard} options={{ headerTitle: (props) => <CPHs {...props} title="create Card" /> }} />
     </Stack.Navigator>
   );
 }
 function StackBoard() {
   return (
       <Stack.Navigator>
-        <Stack.Screen name="Board" component={Board} />
+        <Stack.Screen name="Board" component={Board} options={{ headerTitle: (props) => <CPHs {...props} title="Boards" /> }} />
         <Stack.Screen name="InBoard" component={InBoard} />
-        <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
-        <Stack.Screen name="MakeCard" component={MakeCard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
+        <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ headerTitle: (props) => <CPHs {...props} title="create Board" /> }} />
+        <Stack.Screen name="MakeCard" component={MakeCard} options={{ headerTitle: (props) => <CPHs {...props} title="create Card" /> }} />
       </Stack.Navigator>
   );
 }
@@ -66,7 +66,7 @@ class Nav extends Component {
           <Stack.Navigator screenOptions={{
             headerShown: false,
           }}>
-              <Stack.Screen name="First Screen" component={First} />
+              <Stack.Screen name="First" component={First} />
               <Stack.Screen name="Signup Screen" component={Signup} />
               <Stack.Screen name="Login Screen" component={Login} />
           </Stack.Navigator>
