@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, AsyncStorage, TouchableHighlight, ScrollView, alert,
+  View, Text, StyleSheet, TouchableHighlight, ScrollView, alert,
 } from 'react-native';
+import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
@@ -18,8 +19,7 @@ class Main extends Component {
   }
 
   async componentDidMount() {
-    const auth = await AsyncStorage.getItem('user_Token');
-    axios.get(`${server}/board/list`, { headers: { authorization: auth } })
+    axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
       .then((res) => {
         if (res.status >= 200) {
           this.setState({
@@ -82,5 +82,7 @@ const styles = StyleSheet.create({
     flex: 8,
   },
 });
-
-export default Main;
+const mapStateToProps = ({ token }) => ({
+  token,
+});
+export default connect(mapStateToProps)(Main);

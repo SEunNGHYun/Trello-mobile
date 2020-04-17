@@ -7,7 +7,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
 import Alert from 'react-native-awesome-alerts';
-import { saveTokenInStore, SaveToken } from '../Redux/Reducer';
+import { LoginAuth, SaveToken } from '../Redux/Reducer';
 import { server } from '../utils/server';
 
 class Login extends Component {
@@ -117,10 +117,10 @@ const styles = StyleSheet.create({
 });
 const mapDispatchToProps = (dispatch) => ({
   loginCheck: () => {
-    dispatch(saveTokenInStore());
+    dispatch(LoginAuth());
   },
-  SaveToken: () => {
-    dispatch(SaveToken());
+  SaveToken: (token) => {
+    dispatch(SaveToken(token));
   },
 });
 export default connect(null, mapDispatchToProps)(Login);
