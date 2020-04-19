@@ -19,7 +19,6 @@ class InBoard extends Component {
   async componentDidMount() {
     axios.get(`${server}/container?board_id=${this.props.id}`, { headers: { authorization: this.props.token } })
       .then((Res) => {
-        console.log('RES', Res);
         this.setState({
           Containers: Res.data,
         });
@@ -27,14 +26,17 @@ class InBoard extends Component {
   }
 
   render() {
+    const { id } = this.props.route.params;
     return (
         <View style={styles.total}>
             { this.state.Containers.length === 0 ? (
-              <Containers make={false} />
+              <View style={styles.container}>
+              <Containers contain={2} boardId={id} />
+              </View>
             )
               : (
               <ScrollView>
-                {this.state.Containers.map((container) => <Containers make contain={container} />)}
+                {this.state.Containers.map((container) => <Containers contain={container} boardId={id} />)}
               </ScrollView>
               )}
         </View>
@@ -44,6 +46,10 @@ class InBoard extends Component {
 const styles = StyleSheet.create({
   total: {
     flex: 1,
+    backgroundColor: 'red',
+  },
+  container: {
+    margin: 10,
   },
 });
 const mapStateToProps = ({ token }) => ({
