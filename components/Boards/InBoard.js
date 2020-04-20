@@ -6,6 +6,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { server } from '../utils/server';
+import MakeContainer from '../MakeSeries/MakeContainer';
 import Containers from '../Containers/Containers';
 
 class InBoard extends Component {
@@ -13,6 +14,7 @@ class InBoard extends Component {
     super(props);
     this.state = {
       Containers: [],
+      ContainerTitle: '',
     };
   }
 
@@ -25,17 +27,24 @@ class InBoard extends Component {
       });
   }
 
+  ChangeContainerTitle = (text) => {
+    this.setState({
+      ContainerTitle: text,
+    });
+  }
+
   render() {
     const { id } = this.props.route.params;
     return (
         <View style={styles.total}>
             { this.state.Containers.length === 0 ? (
               <View style={styles.container}>
-              <Containers contain={2} boardId={id} />
+              <MakeContainer boardId={id} ContainerTitle={this.ChangeContainerTitle} />
               </View>
             )
               : (
               <ScrollView>
+                <MakeContainer boardId={id} changeTitle={this.ChangeContainerTitle} />
                 {this.state.Containers.map((container) => <Containers contain={container} boardId={id} />)}
               </ScrollView>
               )}

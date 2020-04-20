@@ -11,7 +11,7 @@ class MakeCard extends Component {
   }
 
   getBoardTitle = () => {
-    axios.get(`${server}/board/list`, { auth })
+    axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
       .then((res) => {
         if (res.status > 200) {
           this.setState({
