@@ -27,13 +27,16 @@ class InBoard extends Component {
       });
   }
 
-  ChangeContainerTitle = (text) => {
+  ChangeContainerTitle = (createObj) => {
+    console.log('createObj', createObj);
+    const titles = this.state.Containers.concat(createObj);
     this.setState({
-      ContainerTitle: text,
+      Containers: titles,
     });
   }
 
   render() {
+    console.log(this.state.Containers);
     const { id } = this.props.route.params;
     return (
         <View style={styles.total}>
@@ -44,7 +47,7 @@ class InBoard extends Component {
             )
               : (
               <ScrollView>
-                <MakeContainer boardId={id} changeTitle={this.ChangeContainerTitle} />
+                <MakeContainer boardId={id} ContainerTitle={this.ChangeContainerTitle} />
                 {this.state.Containers.map((container) => <Containers contain={container} boardId={id} />)}
               </ScrollView>
               )}

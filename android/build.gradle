@@ -36,3 +36,4 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
+ // Name of the font files you want to copy
