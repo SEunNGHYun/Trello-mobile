@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { data } from '../fakedata';
 import { server } from '../utils/server';
 
 class MakeContainers extends React.Component {
@@ -19,17 +20,23 @@ class MakeContainers extends React.Component {
   }
 
   ChangeInput = (text) => {
+    console.log('text', text);
     this.setState({
       containerTitle: text,
     });
   }
 
   MakeContainer = () => {
+    console.log('enter Press');
     const containerContents = { title: this.state.containerTitle };
-    axios.post(`${server}/container/create?board_id=${this.props.boardId}`, containerContents)
-      .then((Res) => {
-        this.props.ContainerTitle(this.state.containerTitle);
-      });
+    this.props.ContainerTitle(data(containerContents.title));
+    this.setState({
+      addtoggle: true,
+    });
+    // axios.post(`${server}/container/create?board_id=${this.props.boardId}`, containerContents)
+    //   .then((Res) => {
+
+    //   });
   }
 
   render() {
@@ -38,8 +45,10 @@ class MakeContainers extends React.Component {
     <View style={styles.container}>
       {this.state.addtoggle ? (
       <TextInput
-      onChangeText={this.onChange}
-      onKeyPress={this.MakeContainer} />
+      placeholder="title"
+      onChangeText={(text) => this.ChangeInput(text)}
+      onSubmitEditing={this.MakeContainer}
+       />
       ) : (
         <TouchableOpacity onPress={this.toggleAdd}>
         <Text style={styles.TitleSize}>
