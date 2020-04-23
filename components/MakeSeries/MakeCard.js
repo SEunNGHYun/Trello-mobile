@@ -2,12 +2,20 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import RNPickerSelect from 'react-native-picker-select';
 import { server } from '../utils/server';
+
 
 class MakeCard extends Component {
   state = {
     boardTitles: [],
     containerTitiles: [],
+    containerID: null,
+    containerDisalbe: true,
+  }
+
+  componentDidMount() {
+
   }
 
   getBoardTitle = () => {
@@ -15,9 +23,10 @@ class MakeCard extends Component {
       .then((res) => {
         if (res.status > 200) {
           this.setState({
+            ...this.state,
             boardTitles: res.data.boardsTitles,
+            containerDisalbe: false,
           });
-          this.getContainerTitle(res.data.id);
         }
       });
   }
@@ -33,12 +42,33 @@ class MakeCard extends Component {
       });
   }
 
+  saveContainerId = (ContainerID) => {
+
+  }
+
   render() {
     return (
             <View style={styles.total}>
+              <View style={styles.selectBox}>
                 <Text>
-                    Card 만드는 곳
+                  Select Board
                 </Text>
+                <RNPickerSelect
+                onValueChange={(boardId) => this.getContainerTitle(boardId)}
+                items={this.state.boardTitles}
+                placeholder={{ label: 'select Board', value: null }} />
+              <Text style={styles.containerText}>
+                  Select Container
+              </Text>
+              <RNPickerSelect
+                disabled={this.state.containerDisalbe}
+                onValueChange={(containerId) => this.saveContainerId(containerId)}
+                items={this.state.containerTitiles}
+                placeholder={{ label: 'select Container', value: null }} />
+              </View>
+              <View style={styles.Input}>
+                <View style={styles.InputCardData} />
+              </View>
             </View>
     );
   }
@@ -47,6 +77,17 @@ const styles = StyleSheet.create({
   total: {
     flex: 1,
     backgroundColor: 'yellow',
+  },
+  selectBox: {
+    flex: 3,
+    backgroundColor: 'orange',
+  },
+  Input: { flex: 5, backgroundColor: 'blue' },
+  InputCardData: {
+    flex: 3,
+  },
+  containerText: {
+    color: 'green',
   },
 });
 
