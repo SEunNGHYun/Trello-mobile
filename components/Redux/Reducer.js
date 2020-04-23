@@ -17,7 +17,6 @@ const initalTokenStore = {
 };
 
 export default function State(state = initalTokenStore, action) {
-  console.log('action', action);
   switch (action.type) {
     case AUTH:
       return {

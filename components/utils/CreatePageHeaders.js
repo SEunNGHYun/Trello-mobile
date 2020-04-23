@@ -9,25 +9,25 @@ import { LogoutAuth } from '../Redux/Reducer';
 import { server } from './server';
 
 class Header extends Component {
-   logout = async () => {
-     await AsyncStorage.removeItem('user_Token');
-     this.props.logout();
-   };
+  logout = async () => {
+    await AsyncStorage.removeItem('user_Token');
+    this.props.logout();
+  };
 
-   boardCreate() {
-     const { boardTitleObj } = this.props;
-     console.log('boardTitle', boardTitleObj);
-     //  axios.post(`${server}/board/create`,, { headers: { authorization: this.props.token } );
-     //  this.props.navigation.navigate('InBoard');
-   }
+  boardCreate() {
+    const { boardTitleObj } = this.props;
+    console.log('boardTitle', boardTitleObj);
+    //  axios.post(`${server}/board/create`,, { headers: { authorization: this.props.token } );
+    //  this.props.navigation.navigate('InBoard');
+  }
 
-   cardCreate() {
+  cardCreate() {
 
-   }
+  }
 
-   render() {
-     const { create, board } = this.props;
-     return (
+  render() {
+    const { create, board } = this.props;
+    return (
             <View style={styles.headerTotal}>
               <View style={styles.headerLeft}>
                 <Text>
@@ -52,8 +52,8 @@ class Header extends Component {
                   </TouchableOpacity>
                   ) }
             </View>
-     );
-   }
+    );
+  }
 }
 const styles = StyleSheet.create({
   headerTotal: {
