@@ -18,7 +18,7 @@ class Header extends Component {
     const { boardTitleObj } = this.props;
     console.log('boardTitle', boardTitleObj);
     //  axios.post(`${server}/board/create`,, { headers: { authorization: this.props.token } );
-    //  this.props.navigation.navigate('InBoard');
+    //  this.props.navigation.navigate('InBoard',  { id: res.data.id, name: res.data.title });
   }
 
   cardCreate() {
