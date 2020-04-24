@@ -27,7 +27,7 @@ function StackHome() {
       <Stack.Screen
       name="Home"
       component={Home}
-      options={({ navigation, route }) => ({ headerTitle: (props) => <CPHs {...props} title="Home" /> })} />
+      options={({ headerTitle: (props) => <CPHs {...props} title="Home" /> })} />
       <Stack.Screen name="InBoard" component={InBoard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
       <Stack.Screen name="MakeBoard" component={MakeBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Board" create="Board" navigation={navigation} /> })} />
       <Stack.Screen name="MakeCard" component={MakeCard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Card" create="Card" navigation={navigation} /> })} />

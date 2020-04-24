@@ -3,6 +3,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
+import { Input } from 'react-native-elements';
+import { SaveCardName, SaveCardDescription, SaveCardDate } from '../Redux/Reducer';
 import { server } from '../utils/server';
 
 
@@ -12,6 +14,7 @@ class MakeCard extends Component {
     containerTitiles: [],
     containerID: null,
     containerDisalbe: true,
+    cardContents: {},
   }
 
   componentDidMount() {
@@ -31,11 +34,13 @@ class MakeCard extends Component {
       });
   }
 
+
   getContainerTitle = (id) => {
     axios.get(`${server}/container/list?id=${id}`, { headers: { authorization: this.props.token } })
       .then((res) => {
         if (res.status > 200) {
           this.setState({
+            ...this.state,
             containerTitiles: res.data,
           });
         }
@@ -67,7 +72,16 @@ class MakeCard extends Component {
                 placeholder={{ label: 'select Container', value: null }} />
               </View>
               <View style={styles.Input}>
-                <View style={styles.InputCardData} />
+                <View style={styles.InputCardData}>
+                  <View style={styles.InputData}>
+                    <Input
+                    placeholder="Card Name"
+                    onChangeText={this.props.SaveCardName} />
+                    <Input
+                    placeholder="Card Description"
+                    onChangeText={this.props.SaveCardDescription} />
+                  </View>
+                </View>
               </View>
             </View>
     );
@@ -82,9 +96,21 @@ const styles = StyleSheet.create({
     flex: 3,
     backgroundColor: 'orange',
   },
-  Input: { flex: 5, backgroundColor: 'blue' },
+  Input: {
+    flex: 5,
+    backgroundColor: 'blue',
+  },
   InputCardData: {
-    flex: 3,
+    width: '100%',
+    height: '60%',
+    backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  InputData: {
+    width: '94%',
+    height: '80%',
+    backgroundColor: 'white',
   },
   containerText: {
     color: 'green',
@@ -94,4 +120,15 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ token }) => ({
   token,
 });
-export default connect(mapStateToProps)(MakeCard);
+const mapDispatchToProps = (dispatch) => ({
+  SaveCardName: (name) => {
+    dispatch(SaveCardName(name));
+  },
+  SaveCardDescription: (description) => {
+    dispatch(SaveCardDescription(description));
+  },
+  SaveCardDate: (date) => {
+    dispatch(SaveCardDate(date));
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(MakeCard);
