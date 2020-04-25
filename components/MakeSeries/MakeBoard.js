@@ -65,7 +65,6 @@ class MakeBoard extends Component {
   }
 }
 const styles = StyleSheet.create({
-
   value: {
     margin: 20,
     marginTop: 50,
