@@ -1,24 +1,34 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet,
+} from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
-import { Input } from 'react-native-elements';
+import { Input, Icon } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Modal from 'react-native-modal';
 import { SaveCardName, SaveCardDescription, SaveCardDate } from '../Redux/Reducer';
 import { server } from '../utils/server';
+import ModelContents from './Picker_Date';
 
 
 class MakeCard extends Component {
-  state = {
-    boardTitles: [],
-    containerTitiles: [],
-    containerID: null,
-    containerDisalbe: true,
-    cardContents: {},
+  constructor(props) {
+    super(props);
+    this.state = {
+      boardTitles: [],
+      containerTitiles: [],
+      containerID: null,
+      containerDisalbe: false,
+      cardContents: {},
+      dateModal: false,
+    };
   }
 
-  componentDidMount() {
 
+  componentDidMount() {
+    this.getBoardTitle();
   }
 
   getBoardTitle = () => {
@@ -28,7 +38,6 @@ class MakeCard extends Component {
           this.setState({
             ...this.state,
             boardTitles: res.data.boardsTitles,
-            containerDisalbe: false,
           });
         }
       });
@@ -36,6 +45,10 @@ class MakeCard extends Component {
 
 
   getContainerTitle = (id) => {
+    this.setState({
+      ...this.state,
+      containerDisalbe: true,
+    });
     axios.get(`${server}/container/list?id=${id}`, { headers: { authorization: this.props.token } })
       .then((res) => {
         if (res.status > 200) {
@@ -51,7 +64,12 @@ class MakeCard extends Component {
 
   }
 
+  cardServerToss = () => {
+    axios.post(`${server}/card/create?${this.state.containerID}`);
+  }
+
   render() {
+    console.log('this.date', this.date);
     return (
             <View style={styles.total}>
               <View style={styles.selectBox}>
@@ -72,7 +90,7 @@ class MakeCard extends Component {
                 placeholder={{ label: 'select Container', value: null }} />
               </View>
               <View style={styles.Input}>
-                <View style={styles.InputCardData}>
+                <View style={this.state.containerDisalbe ? styles.trueInputCardData : styles.falseInputCardData}>
                   <View style={styles.InputData}>
                     <Input
                     placeholder="Card Name"
@@ -80,6 +98,16 @@ class MakeCard extends Component {
                     <Input
                     placeholder="Card Description"
                     onChangeText={this.props.SaveCardDescription} />
+                    <TouchableOpacity
+                    style={styles.calendar}
+                    onPress={() => this.setState({ dateModal: !this.state.dateModal })}>
+                    <Icon type="feather" name="calendar" />
+                    <Text>Due Date ...</Text>
+                    </TouchableOpacity>
+                    <Modal
+                    isVisible={this.state.dateModal}>
+                      <ModelContents />
+                    </Modal>
                   </View>
                 </View>
               </View>
@@ -98,12 +126,19 @@ const styles = StyleSheet.create({
   },
   Input: {
     flex: 5,
-    backgroundColor: 'blue',
+    backgroundColor: 'pink',
   },
-  InputCardData: {
+  falseInputCardData: {
     width: '100%',
     height: '60%',
     backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  trueInputCardData: {
+    width: '100%',
+    height: '60%',
+    backgroundColor: 'blue',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -111,9 +146,14 @@ const styles = StyleSheet.create({
     width: '94%',
     height: '80%',
     backgroundColor: 'white',
+    justifyContent: 'space-between',
+    padding: 10,
   },
   containerText: {
     color: 'green',
+  },
+  calendar: {
+    flexDirection: 'row',
   },
 });
 
