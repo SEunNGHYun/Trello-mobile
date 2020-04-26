@@ -106,7 +106,7 @@ class MakeCard extends Component {
                     </TouchableOpacity>
                     <Modal
                     isVisible={this.state.dateModal}>
-                      <ModelContents />
+                      <ModelContents closeModal={() => this.setState({ dateModal: !this.state.dateModal })} />
                     </Modal>
                   </View>
                 </View>
