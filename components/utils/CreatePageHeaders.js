@@ -17,16 +17,20 @@ class Header extends Component {
   boardCreate() {
     const { boardTitleObj } = this.props;
     console.log('boardTitle', boardTitleObj);
-    //  axios.post(`${server}/board/create`,, { headers: { authorization: this.props.token } );
+    //  axios.post(`${server}/board/create`,boardTitleObj, { headers: { authorization: this.props.token } );
     //  this.props.navigation.navigate('InBoard',  { id: res.data.id, name: res.data.title });
   }
 
   cardCreate() {
-
+    const { cardInfo, containerId } = this.props;
+    console.log('cardInfo', cardInfo);
+    //  axios.post(`${server}/card/create?container_id=${containerId}`,cardInfo, { headers: { authorization: this.props.token } );
+    this.props.navigation.navigate('Home');
   }
 
   render() {
-    const { create, board } = this.props;
+    const { create } = this.props;
+    console.log('this.props', this.props.cardInfo);
     return (
             <View style={styles.headerTotal}>
               <View style={styles.headerLeft}>
@@ -38,7 +42,7 @@ class Header extends Component {
                   ? (
                     <TouchableOpacity
                     style={styles.logout}
-                    onPress={() => (create ? this.boardCreate() : this.cardCreate())}>
+                    onPress={() => (create === 'Board' ? this.boardCreate() : this.cardCreate())}>
                       <Icon type="material" name="done" />
                     </TouchableOpacity>
                   )
@@ -71,9 +75,17 @@ const styles = StyleSheet.create({
     marginRight: 1,
   },
 });
-const mapStateToProps = ({ token, boardTitleObj }) => ({
+const mapStateToProps = ({
+  token, boardTitleObj, cardName, cardDescription, cardDate, containerId,
+}) => ({
   token,
   boardTitleObj,
+  cardInfo: {
+    name: cardName,
+    describe: cardDescription,
+    date: cardDate,
+  },
+  containerId,
 });
 const mapDispatchToProps = (dispatch) => ({
   logout: () => {

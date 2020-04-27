@@ -19,27 +19,55 @@ class Picker_Date extends Component {
       date: false,
       saveDate: null,
       saveTime: null,
+      saveAlarm: null,
     };
   }
 
   SelectPicker = (key, val) => {
     if (key === 'Date') {
       if (val === 'date') {
-        this.setState({ date: true });
+        this.setState({
+          ...this.state,
+          date: true,
+        });
+      } else {
+        this.setState({
+          ...this.state,
+          saveDate: val,
+        });
       }
     } else if (key === 'Time') {
       if (val === 'time') {
         this.setState({
+          ...this.state,
           time: true,
         });
+      } else {
+        this.setState({
+          ...this.state,
+          saveTime: val,
+        });
       }
+    } else if (key === 'Alarm') {
+      this.setState({
+        ...this.state,
+        saveAlarm: val,
+      });
     }
+  }
+
+
+  cardDataToss = () => {
+    const cardData = { date: this.state.saveDate, time: this.state.saveTime, alarm: this.state.saveAlarm };
+    this.props.SaveCardDate(cardData);
+    this.props.closeModal();
   }
 
   SaveDate = (value) => {
     console.log('val', value);
     this.setState({
       ...this.state,
+      saveTime: value,
       date: false,
       time: false,
     });
@@ -48,10 +76,11 @@ class Picker_Date extends Component {
   render() {
     const { time, date } = this.state;
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <View style={styles.Modal}>
         <Text>Due Date</Text>
         <View>
         <RNPickerSelect
+        style={styles.picker}
         onValueChange={(value) => this.SelectPicker('Date', value)}
         items={[
           { label: 'today', value: today },
@@ -61,6 +90,7 @@ class Picker_Date extends Component {
         ]}
         />
         <RNPickerSelect
+        style={styles.picker}
         onValueChange={(value) => this.SelectPicker('Time', value)}
         items={[
           { label: 'Moring', value: '오전 9:00' },
@@ -72,15 +102,15 @@ class Picker_Date extends Component {
         </View>
         <Text>Set Reminder</Text>
         <RNPickerSelect
-        onValueChange={(value) => this.SelectPicker('alarm', value)}
+        onValueChange={(value) => this.SelectPicker('Alarm', value)}
         items={[
-          { label: '5 minutes before', value: { categorize: 'Min', val: 5 } },
-          { label: '10 minutes before', value: { categorize: 'Min', val: 10 } },
-          { label: '15 minutes before', value: { categorize: 'Min', val: 15 } },
-          { label: '1 hours before', value: { categorize: 'hour', val: 1 } },
-          { label: '2 hours before', value: { categorize: 'hour', val: 2 } },
-          { label: '1 Days before', value: { categorize: 'Day', val: 1 } },
-          { label: '2 Days before', value: { categorize: 'Day', val: 2 } },
+          { label: '5 minutes before', value: '5M' },
+          { label: '10 minutes before', value: '10M' },
+          { label: '15 minutes before', value: '15M' },
+          { label: '1 hours before', value: '1H' },
+          { label: '2 hours before', value: '2H' },
+          { label: '1 Days before', value: '1D' },
+          { label: '2 Days before', value: '2D' },
         ]} />
         <Text>
           Reminders will be sent to all members and watchers of this card
@@ -98,6 +128,7 @@ class Picker_Date extends Component {
           mode="time"
           onCancel={() => this.setState({ time: false })}
           onConfirm={this.SaveDate} />
+          <View style={styles.buttons}>
         <Button
         title="cnacel"
         type="clear"
@@ -105,13 +136,28 @@ class Picker_Date extends Component {
         <Button
         title="done"
         type="default"
-        onPress={() => this.cardServerToss} />
+        onPress={this.cardDataToss} />
+          </View>
         </View>
         </View>
     );
   }
 }
-
+const styles = StyleSheet.create({
+  Modal: {
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    width: 350,
+    height: 300,
+  },
+  picker: {
+    width: 100,
+  },
+  buttons: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+});
 
 const mapDispatchToProps = (dispatch) => ({
   SaveCardDate: (date) => {

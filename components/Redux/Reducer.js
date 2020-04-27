@@ -6,6 +6,7 @@ export const BOARDTITLE = 'BOARDTITLE';
 export const CARDNAME = 'CARDNAME';
 export const CARDDESCRIPTION = 'CARDDESCRIPTION';
 export const CARDDATE = 'CARDDATE';
+export const CONTAINERID = 'CONTAINERID';
 // 액션 타입 정의
 
 export const LoginAuth = () => ({ type: AUTH });
@@ -17,6 +18,7 @@ export const SaveBoardTitle = (boardTitleObj) => ({ type: BOARDTITLE, boardTitle
 export const SaveCardName = (cardName) => ({ type: CARDNAME, cardName });
 export const SaveCardDescription = (cardDescription) => ({ type: CARDDESCRIPTION, cardDescription });
 export const SaveCardDate = (cardDate) => ({ type: CARDDATE, cardDate });
+export const SaveContainerID = (containerId) => ({ type: CONTAINERID, containerId });
 // export const
 
 const initalTokenStore = {
@@ -25,7 +27,8 @@ const initalTokenStore = {
   boardTitleObj: null,
   cardName: null,
   cardDescription: null,
-  cardDate: null,
+  cardDate: {},
+  containerId: null,
 };
 
 export default function State(state = initalTokenStore, action) {
@@ -64,6 +67,11 @@ export default function State(state = initalTokenStore, action) {
       return {
         ...state,
         cardDate: action.cardDate,
+      };
+    case CONTAINERID:
+      return {
+        ...state,
+        containerId: action.containerId,
       };
     default:
       return state;
