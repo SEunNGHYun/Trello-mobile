@@ -8,7 +8,9 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Input, Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
-import { SaveCardName, SaveCardDescription, SaveCardDate } from '../Redux/Reducer';
+import {
+  SaveCardName, SaveCardDescription, SaveCardDate, SaveContainerID,
+} from '../Redux/Reducer';
 import { server } from '../utils/server';
 import ModelContents from './Picker_Date';
 
@@ -49,9 +51,9 @@ class MakeCard extends Component {
       ...this.state,
       containerDisalbe: true,
     });
-    axios.get(`${server}/container/list?id=${id}`, { headers: { authorization: this.props.token } })
+    axios.get(`${server}/container?board_id=${id}`, { headers: { authorization: this.props.token } })
       .then((res) => {
-        if (res.status > 200) {
+        if (res.status === 200) {
           this.setState({
             ...this.state,
             containerTitiles: res.data,
@@ -61,7 +63,6 @@ class MakeCard extends Component {
   }
 
   saveContainerId = (ContainerID) => {
-
   }
 
   cardServerToss = () => {
@@ -69,7 +70,6 @@ class MakeCard extends Component {
   }
 
   render() {
-    console.log('this.date', this.date);
     return (
             <View style={styles.total}>
               <View style={styles.selectBox}>
@@ -89,9 +89,13 @@ class MakeCard extends Component {
                 items={this.state.containerTitiles}
                 placeholder={{ label: 'select Container', value: null }} />
               </View>
+              <View style={{ flex: 1, marginBottom: 50 }} />
+              <View style={{ flex: 7 }}>
               <View style={styles.Input}>
-                <View style={this.state.containerDisalbe ? styles.trueInputCardData : styles.falseInputCardData}>
-                  <View style={styles.InputData}>
+                <View
+                style={this.state.containerDisalbe ? styles.trueInputCardData : styles.falseInputCardData}>
+                  <View
+                  style={styles.InputData}>
                     <Input
                     placeholder="Card Name"
                     onChangeText={this.props.SaveCardName} />
@@ -111,6 +115,7 @@ class MakeCard extends Component {
                   </View>
                 </View>
               </View>
+              </View>
             </View>
     );
   }
@@ -118,15 +123,15 @@ class MakeCard extends Component {
 const styles = StyleSheet.create({
   total: {
     flex: 1,
-    backgroundColor: 'yellow',
   },
   selectBox: {
-    flex: 3,
-    backgroundColor: 'orange',
+    flex: 2.5,
+    marginTop: 35,
   },
   Input: {
-    flex: 5,
-    backgroundColor: 'pink',
+    position: 'absolute',
+    height: 350,
+    width: '100%',
   },
   falseInputCardData: {
     width: '100%',
@@ -166,6 +171,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   SaveCardDescription: (description) => {
     dispatch(SaveCardDescription(description));
+  },
+  SaveContainerId: (CotainerId) => {
+    dispatch(SaveContainerID(CotainerId));
   },
   SaveCardDate: (date) => {
     dispatch(SaveCardDate(date));

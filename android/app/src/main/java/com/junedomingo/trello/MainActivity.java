@@ -1,7 +1,6 @@
 package com.junedomingo.trello;
 
 import com.facebook.react.ReactActivity;
-import com.reactnativecommunity.picker.RNCPickerPackage;
 
 public class MainActivity extends ReactActivity {
 
