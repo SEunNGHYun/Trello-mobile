@@ -43,10 +43,15 @@ class MakeBoard extends Component {
     return (
         <View>
           <View style={styles.value}>
+            <View
+            style={styles.NameInput}>
+            <Text>Board Name</Text>
             <Input
             placeholder="Board Title"
             onChangeText={(text) => this.ChangeStates_ChangeRedux('Boardtitle', text)}
             />
+            </View>
+            <Text>Visibility</Text>
             <RNPickerSelect
                 onValueChange={(value) => this.ChangeStates_ChangeRedux('Disclosure', value)}
                 items={[
@@ -55,7 +60,7 @@ class MakeBoard extends Component {
                 placeholder={{ label: 'private', value: 'private' }}
             />
             <View style={styles.create}>
-              <Text>
+              <Text style={styles.createText}>
               create
               </Text>
             </View>
@@ -71,7 +76,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
   },
   create: {
-
+    alignItems: 'flex-end',
+  },
+  NameInput: {
+    marginBottom: 10,
+  },
+  createText: {
+    fontSize: 20,
   },
 });
 const mapStateToProps = ({ token }) => ({
