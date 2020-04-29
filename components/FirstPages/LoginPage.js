@@ -23,25 +23,28 @@ class Login extends Component {
   }
 
 
-  serverConnect() {
+  async serverConnect() {
     const { email, password } = this.state;
     if (this.state.email === null || this.state.password === null) {
       this.setState({
         loginFailAlert: true,
       });
     } else {
-      axios.post(`${server}/user/login`, { email, password })
-        .then(async (res) => {
-          if (res.status === 201) {
-            this.props.loginCheck();
-            this.props.SaveToken(res.data.token);
-            await AsyncStorage.setItem('user_Token', res.data.token);
-          } else {
-            this.setState({
-              errAlert: false,
-            });
-          }
-        });
+      this.props.loginCheck();
+      this.props.SaveToken('token');
+      await AsyncStorage.setItem('user_Token', 'token');
+      // axios.post(`${server}/user/login`, { email, password })
+      //   .then(async (res) => {
+      //     if (res.status === 201) {
+      //       this.props.loginCheck();
+      //       this.props.SaveToken(res.data.token);
+      //       await AsyncStorage.setItem('user_Token', res.data.token);
+      //     } else {
+      //       this.setState({
+      //         errAlert: false,
+      //       });
+      //     }
+      //   });
     }
   }
 
@@ -87,13 +90,13 @@ class Login extends Component {
             </TouchableOpacity>
             </View>
             <Alert
-        show={this.state.loginFailAlert}
-        title="로그인 실패"
-        message="로그인에 실패하였습니다."
-        confirmText="로그인 다시 하기"
-        onConfirmPressed={() => this.setState({
-          loginFailAlert: false, email: null, password: null,
-        })} />
+              show={this.state.loginFailAlert}
+              title="로그인 실패"
+              message="로그인에 실패하였습니다."
+              confirmText="로그인 다시 하기"
+              onConfirmPressed={() => this.setState({
+                loginFailAlert: false, email: null, password: null,
+              })} />
         </View>
         </View>
     );

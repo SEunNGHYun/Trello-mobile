@@ -27,8 +27,8 @@ function StackHome() {
       <Stack.Screen
       name="Home"
       component={Home}
-      options={({ headerTitle: (props) => <CPHs {...props} title="Home" /> })} />
-      <Stack.Screen name="InBoard" component={InBoard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
+      options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="Home" navigation={navigation} /> })} />
+      <Stack.Screen name="InBoard" component={InBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} navigation={navigation} /> })} />
       <Stack.Screen name="MakeBoard" component={MakeBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Board" create="Board" navigation={navigation} /> })} />
       <Stack.Screen name="MakeCard" component={MakeCard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Card" create="Card" navigation={navigation} /> })} />
     </Stack.Navigator>
@@ -37,8 +37,8 @@ function StackHome() {
 function StackBoard() {
   return (
       <Stack.Navigator>
-        <Stack.Screen name="Board" component={Board} options={{ headerTitle: (props) => <CPHs {...props} title="Boards" /> }} />
-        <Stack.Screen name="InBoard" component={InBoard} options={{ headerTitle: (props) => <CPHs {...props} /> }} />
+        <Stack.Screen name="Board" component={Board} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="Boards" navigation={navigation} /> })} />
+        <Stack.Screen name="InBoard" component={InBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} navigation={navigation} /> })} />
         <Stack.Screen name="MakeBoard" component={MakeBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Board" create="Board" navigation={navigation} /> })} />
         <Stack.Screen name="MakeCard" component={MakeCard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Card" create="Card" navigation={navigation} /> })} />
       </Stack.Navigator>
@@ -59,7 +59,8 @@ class Nav extends Component {
       <NavigationContainer>
       <SafeAreaProvider>
         { this.props.Login ? (
-            <Drawer.Navigator>
+            <Drawer.Navigator
+            hideStatusBar={false}>
                 <Drawer.Screen name="Home" component={StackHome} />
                 <Drawer.Screen name="Boards" component={StackBoard} />
                 <Drawer.Screen name="UserInfo" component={UserPage} />

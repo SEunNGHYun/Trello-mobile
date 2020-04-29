@@ -49,10 +49,10 @@ class Header extends Component {
                   : (
                   <TouchableOpacity
                     style={styles.headerRight}
-                    onPress={this.logout}>
-                    <Text>
-                    logout
-                    </Text>
+                    onPress={this.props.navigation.openDrawer}>
+                    <Icon
+                    type="material"
+                    name="reorder" />
                   </TouchableOpacity>
                   ) }
             </View>
