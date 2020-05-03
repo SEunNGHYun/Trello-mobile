@@ -18,15 +18,18 @@ class Main extends Component {
     };
   }
 
-  async componentDidMount() {
-    axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
-      .then((res) => {
-        if (res.status >= 200) {
-          this.setState({
-            BoardList: boardlist,
-          });
-        }
-      });
+  componentDidMount() {
+    this.setState({
+      BoardList: boardlist,
+    });
+    // axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
+    //   .then((res) => {
+    //     if (res.status >= 200) {
+    //       this.setState({
+    //         BoardList: boardlist,
+    //       });
+    //     }
+    //   });
   }
 
   longPressButton = () => {

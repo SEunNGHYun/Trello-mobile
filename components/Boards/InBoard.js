@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { server } from '../utils/server';
 import MakeContainer from '../MakeSeries/MakeContainer';
-import Containers from '../Containers/Containers';
+import Container from '../Containers/Containers';
 
 class InBoard extends Component {
   constructor(props) {
@@ -27,41 +27,33 @@ class InBoard extends Component {
       });
   }
 
-  ChangeContainerTitle = (createObj) => {
+  addContainer= (createObj) => {
     console.log('createObj', createObj);
-    const titles = this.state.Containers.concat(createObj);
+    const titles = this.state.Containers.concat([createObj]);
     this.setState({
       Containers: titles,
     });
   }
 
   render() {
-    console.log(this.state.Containers);
+    console.log('InBoard', this.state.Containers);
     const { id } = this.props.route.params;
     return (
-        <View style={styles.total}>
-            { this.state.Containers.length === 0 ? (
-              <View style={styles.container}>
-              <MakeContainer boardId={id} ContainerTitle={this.ChangeContainerTitle} />
-              </View>
-            )
-              : (
-              <ScrollView>
-                <MakeContainer boardId={id} ContainerTitle={this.ChangeContainerTitle} />
-                {this.state.Containers.map((container) => <Containers contain={container} boardId={id} />)}
-              </ScrollView>
-              )}
+        <View>
+          <ScrollView
+          horizontal
+          style={styles.Conatiners}>
+            { this.state.Containers.length === 0 ? <></>
+              : <View style={styles.Conatiners}>{this.state.Containers.map((container) => <Container contain={container} boardId={id} />)}</View>}
+              <MakeContainer boardId={id} ContainerTitle={this.addContainer} />
+          </ScrollView>
         </View>
     );
   }
 }
 const styles = StyleSheet.create({
-  total: {
-    flex: 1,
-    backgroundColor: 'red',
-  },
-  container: {
-    margin: 10,
+  Conatiners: {
+    flexDirection: 'row',
   },
 });
 const mapStateToProps = ({ token }) => ({
