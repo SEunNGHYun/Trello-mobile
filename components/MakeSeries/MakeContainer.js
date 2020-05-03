@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { data } from '../fakedata';
 import { server } from '../utils/server';
 
 class MakeContainers extends React.Component {
@@ -29,10 +28,12 @@ class MakeContainers extends React.Component {
   MakeContainer = () => {
     console.log('enter Press');
     const containerContents = { title: this.state.containerTitle };
-    this.props.ContainerTitle(data(containerContents.title));
     this.setState({
-      addtoggle: true,
+      addtoggle: false,
+      containerTitle: '',
     });
+    this.props.ContainerTitle(containerContents);
+
     // axios.post(`${server}/container/create?board_id=${this.props.boardId}`, containerContents)
     //   .then((Res) => {
 
@@ -40,12 +41,12 @@ class MakeContainers extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
     <View style={styles.container}>
       {this.state.addtoggle ? (
       <TextInput
       placeholder="title"
+      style={styles.Input}
       onChangeText={(text) => this.ChangeInput(text)}
       onSubmitEditing={this.MakeContainer}
        />
@@ -61,8 +62,12 @@ class MakeContainers extends React.Component {
   }
 }
 const styles = StyleSheet.create({
+  Input: {
+    width: '100%',
+  },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'purple',
+    width: '100%',
   },
   TitleSize: {
     fontSize: 30,
