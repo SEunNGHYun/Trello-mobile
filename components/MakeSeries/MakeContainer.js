@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity, TextInput,
+  View, Text, StyleSheet, TouchableOpacity, TextInput, Dimensions,
 } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -63,14 +63,21 @@ class MakeContainers extends React.Component {
 }
 const styles = StyleSheet.create({
   Input: {
-    width: '100%',
+    width: Dimensions.get('window').width - 110,
+    height: 50,
+    backgroundColor: 'white',
   },
   container: {
-    backgroundColor: 'purple',
-    width: '100%',
+    margin: 10,
+    marginRight: 10,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    width: Dimensions.get('window').width - 95,
+    height: 50,
+    paddingLeft: 10,
   },
   TitleSize: {
-    fontSize: 30,
+    fontSize: 25,
   },
 });
 const mapStateToProps = ({ token }) => ({

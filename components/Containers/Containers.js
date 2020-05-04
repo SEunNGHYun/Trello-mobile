@@ -16,8 +16,12 @@ class Container extends Component {
     };
   }
 
-  giveCardData = (val) => {
-    
+  giveCardData = () => {
+    this.setState({
+      ...this.state,
+      AddCardTitle: '',
+      AddCardBool: false,
+    });
   }
 
   render() {
@@ -25,32 +29,40 @@ class Container extends Component {
     console.log('contain', contain);
     return (
       <View style={styles.Container}>
-        <View style={styles.Cotianertitle}>
-        <Text style={{ fontSize: 40, color: 'black' }}>
+        <View style={styles.Contianer_title_Icon}>
+        <View style={styles.Title}>
+        <Text style={{ fontSize: 30, color: 'black' }}>
           {contain.title}
         </Text>
+        </View>
+        <View style={{ paddingTop: 11 }}>
         <Icon
         type="feather"
         name="more-vertical" />
         </View>
+        </View>
         <ScrollView
-        style={styles.CardList}>
+        style={this.state.CardList.length === 0 ? styles.Length_is_Zero : styles.Length_is_over_Zero}>
           {this.state.CardList.map((card) => (
-            <TouchableOpacity><Text>{card.title}</Text></TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Card_Detail')}>
+              <Text>{card.title}</Text>
+            </TouchableOpacity>
           ))}
         </ScrollView>
         {this.state.AddCardBool ? (
         <TextInput
-        onChangeText={this.giveCardData}
-        autoFocus
-        onSubmitEditing={() => this.setState({ ...this.state, AddCardBool: false })}
+        placeholder="Card title"
+        style={styles.Card_Input}
+        onChangeText={(val) => this.setState({ ...this.state, AddCardTitle: val })}
+        onSubmitEditing={this.giveCardData}
         />
         ) : (
         <TouchableOpacity
           style={styles.AddCardButt}
           onPress={() => this.setState({ AddCardBool: true })}>
           <Text
-            style={{ fontSize: 30, color: 'blue' }}>
+            style={{ fontSize: 20, color: 'blue' }}>
             Add Card
           </Text>
         </TouchableOpacity>
@@ -62,23 +74,34 @@ class Container extends Component {
 
 const styles = StyleSheet.create({
   Container: {
-    width: Dimensions.get('window').width - 95,
+    width: Dimensions.get('window').width - 80,
     marginRight: 30,
     margin: 10,
   },
-  Cotianertitle: {
+  Contianer_title_Icon: {
     backgroundColor: 'white',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
   },
-  CardList: {
+  Title: {
+    width: Dimensions.get('window').width - 110,
+  },
+  Length_is_Zero: {
     backgroundColor: 'gray',
-    margin: 10,
+    width: Dimensions.get('window').width - 80,
+    height: 40,
+  },
+  Length_is_over_Zero: {
+    backgroundColor: 'gray',
+    width: Dimensions.get('window').width - 80,
   },
   AddCardButt: {
     backgroundColor: 'white',
+    padding: 10,
     alignItems: 'center',
+  },
+  Card_Input: {
+    backgroundColor: 'white',
   },
 });
 
