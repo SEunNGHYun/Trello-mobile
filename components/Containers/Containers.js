@@ -17,8 +17,9 @@ class Container extends Component {
   }
 
   giveCardData = () => {
+    const cardData = this.state.CardList.concat([{ title: this.state.AddCardTitle }]);
     this.setState({
-      ...this.state,
+      CardList: cardData,
       AddCardTitle: '',
       AddCardBool: false,
     });
@@ -45,8 +46,10 @@ class Container extends Component {
         style={this.state.CardList.length === 0 ? styles.Length_is_Zero : styles.Length_is_over_Zero}>
           {this.state.CardList.map((card) => (
             <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Card_Detail')}>
-              <Text>{card.title}</Text>
+            key={card.id ? card.id : card.title}
+            style={styles.One_Card_list}
+            onPress={() => this.props.navigation.navigate('Card_Detail', { title: card.title })}>
+              <Text style={{ fontSize: 20 }}>{card.title}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -102,6 +105,12 @@ const styles = StyleSheet.create({
   },
   Card_Input: {
     backgroundColor: 'white',
+  },
+  One_Card_list: {
+    margin: 10,
+    paddingLeft: 3,
+    backgroundColor: 'white',
+    alignItems: 'flex-start',
   },
 });
 

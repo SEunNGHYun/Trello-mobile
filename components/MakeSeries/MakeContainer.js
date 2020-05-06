@@ -28,12 +28,18 @@ class MakeContainers extends React.Component {
   MakeContainer = () => {
     console.log('enter Press');
     const containerContents = { title: this.state.containerTitle };
-    this.setState({
-      addtoggle: false,
-      containerTitle: '',
-    });
-    this.props.ContainerTitle(containerContents);
-
+    if (containerContents.title.length > 0) {
+      this.setState({
+        addtoggle: false,
+        containerTitle: '',
+      });
+      this.props.ContainerTitle(containerContents);
+    } else {
+      this.setState({
+        ...this.state,
+        addtoggle: false,
+      });
+    }
     // axios.post(`${server}/container/create?board_id=${this.props.boardId}`, containerContents)
     //   .then((Res) => {
 
