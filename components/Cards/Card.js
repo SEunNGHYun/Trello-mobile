@@ -5,8 +5,11 @@ import {
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { CheckBox, Icon } from 'react-native-elements';
+import Modal from 'react-native-modal';
 import { ScrollView } from 'react-native-gesture-handler';
 import { server } from '../utils/server';
+import ModelContents from '../MakeSeries/Picker_Date';
+
 
 class Card_detail extends Component {
   constructor(props) {
@@ -17,6 +20,8 @@ class Card_detail extends Component {
       toggleCheckbox: false,
       togglelable: false,
       lablelist: ['black'],
+      toggleMember: false,
+      toggleDate: false,
     };
   }
 
@@ -26,7 +31,7 @@ class Card_detail extends Component {
   }
 
   render() {
-    console.log('this.', this.state.togglelable);
+    console.log('this.', this.state.toggleDate);
     const { title } = this.props.route.params;
     return (
             <View style={styles.Card}>
@@ -57,6 +62,15 @@ class Card_detail extends Component {
                   ))}
                 </View>
                 ) : <View />}
+                <TouchableOpacity
+                  onPress={() => this.setState({ toggleDate: !this.state.toggleDate })}>
+                  <Text>
+                    Due Date
+                  </Text>
+                </TouchableOpacity>
+                <Modal isVisible={this.state.toggleDate}>
+                    <ModelContents closeModal={() => this.setState({ toggleDate: false })} />
+                </Modal>
                 {/* <View>
                   <TextInput
                   multiline
@@ -87,6 +101,9 @@ const styles = StyleSheet.create({
   Card_lable_View: {
     backgroundColor: 'gray',
     width: '100%',
+  },
+  Card_Modal_Date: {
+    backgroundColor: 'white',
   },
 });
 const mapStateToProps = ({ token }) => ({

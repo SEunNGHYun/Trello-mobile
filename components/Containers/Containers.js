@@ -19,10 +19,10 @@ class Container extends Component {
   }
 
   componentDidMount() {
-    // axios.get(`${server}/cotainer/board_id=${this.props.boardId}`)
-    //   .then((res) => {
-    //     this.setState({ CardList: res.data.cards, container_id: res.data.id });
-    //   });
+    axios.get(`${server}/cotainer/board_id=${this.props.boardId}`)
+      .then((res) => {
+        this.setState({ CardList: res.data.cards, container_id: res.data.id });
+      });
   }
 
   giveCardData = () => {
