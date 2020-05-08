@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
 import { server } from '../utils/server';
 
 class Container extends Component {
@@ -13,7 +14,15 @@ class Container extends Component {
       CardList: [],
       AddCardBool: false,
       AddCardTitle: '',
+      container_id: null,
     };
+  }
+
+  componentDidMount() {
+    axios.get(`${server}/cotainer/board_id=${this.props.boardId}`)
+      .then((res) => {
+        this.setState({ CardList: res.data.cards, container_id: res.data.id });
+      });
   }
 
   giveCardData = () => {
@@ -27,7 +36,7 @@ class Container extends Component {
 
   render() {
     const { contain } = this.props;
-    console.log('contain', contain);
+    console.log('contain', this.props.token);
     return (
       <View style={styles.Container}>
         <View style={styles.Contianer_title_Icon}>
@@ -48,7 +57,7 @@ class Container extends Component {
             <TouchableOpacity
             key={card.id ? card.id : card.title}
             style={styles.One_Card_list}
-            onPress={() => this.props.navigation.navigate('Card_Detail', { title: card.title })}>
+            onPress={() => this.props.navigation.navigate('Card_Detail', { title: card.title, container_id: this.state.container_id })}>
               <Text style={{ fontSize: 20 }}>{card.title}</Text>
             </TouchableOpacity>
           ))}
@@ -113,5 +122,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
 });
-
-export default Container;
+const mapStatestoPrope = ({ token }) => ({
+  token,
+});
+export default connect(mapStatestoPrope)(Container);

@@ -18,13 +18,13 @@ class InBoard extends Component {
     };
   }
 
-  async componentDidMount() {
-    axios.get(`${server}/container?board_id=${this.props.id}`, { headers: { authorization: this.props.token } })
-      .then((Res) => {
-        this.setState({
-          Containers: Res.data,
-        });
-      });
+  componentDidMount() {
+    // axios.get(`${server}/container?board_id=${this.props.id}`, { headers: { authorization: this.props.token } })
+    //   .then((Res) => {
+    //     this.setState({
+    //       Containers: Res.data,
+    //     });
+    //   });
   }
 
   addContainer= (createObj) => {
@@ -44,7 +44,7 @@ class InBoard extends Component {
           horizontal
           style={styles.Conatiners}>
             { this.state.Containers.length === 0 ? <></>
-              : <View style={styles.Conatiners}>{this.state.Containers.map((container) => <Container contain={container} boardId={id} />)}</View>}
+              : (<View style={styles.Conatiners}>{this.state.Containers.map((container) => <Container navigation={this.props.navigation} contain={container} boardId={id} />)}</View>)}
               <MakeContainer boardId={id} ContainerTitle={this.addContainer} />
           </ScrollView>
         </View>
