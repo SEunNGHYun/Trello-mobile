@@ -65,10 +65,6 @@ class MakeCard extends Component {
   saveContainerId = (ContainerID) => {
   }
 
-  cardServerToss = () => {
-    axios.post(`${server}/card/create?${this.state.containerID}`);
-  }
-
   render() {
     return (
             <View style={styles.total}>
@@ -110,7 +106,7 @@ class MakeCard extends Component {
                     </TouchableOpacity>
                     <Modal
                     isVisible={this.state.dateModal}>
-                      <ModelContents closeModal={() => this.setState({ dateModal: !this.state.dateModal })} />
+                      <ModelContents closeModal={() => this.setState({ dateModal: !this.state.dateModal })} detail={false} />
                     </Modal>
                   </View>
                 </View>

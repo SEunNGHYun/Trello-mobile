@@ -17,21 +17,36 @@ class Card_detail extends Component {
     this.state = {
       describe: null,
       checkboxText: null,
-      toggleCheckbox: false,
       togglelable: false,
       lablelist: ['black'],
       toggleMember: false,
       toggleDate: false,
+      toggleAtt: false,
+      CheckboxTitle: null,
+      showCheckbox: false,
+      Checklist: [],
     };
   }
+
 
   componentDidMount() {
     // axios.get(`${server}/card/container_id=${this.props.container_id}`, { headers: { authorization: this.props.token } })
     //   .then((res) => this.setState({ describe: res.data.describe }));
   }
 
+  checkboxTitle = (text) => {
+    this.setState({ CheckboxTitle: text });
+  }
+
+  addCheckbox = () => {
+    const list = this.state.Checklist.concat([{ title: this.state.CheckboxTitle }]);
+    this.setState({
+      Checklist: list,
+    });
+  }
+
   render() {
-    console.log('this.', this.state.toggleDate);
+    console.log('this.state', this.state.Checklist);
     const { title } = this.props.route.params;
     return (
             <View style={styles.Card}>
@@ -40,13 +55,13 @@ class Card_detail extends Component {
                 style={{ fontSize: 30 }}>{title}
                 </Text>
               </View>
-              <View style={styles.Card_details}>
+              <ScrollView style={styles.Card_details}>
                 <TextInput
                   placeholder="describe"
                   value={this.state.describe}
                   onChangeText={(val) => this.setState({ describe: val })}
                 />
-                <ScrollView>
+                <View>
                 <TouchableOpacity
                   onPress={() => this.setState({ togglelable: !this.state.togglelable })}>
                   <Text>
@@ -63,22 +78,46 @@ class Card_detail extends Component {
                 </View>
                 ) : <View />}
                 <TouchableOpacity
+                  onPress={() => this.setState({ toggleMember: !this.state.toggleMember })}>
+                  <Text>
+                    Member
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                   onPress={() => this.setState({ toggleDate: !this.state.toggleDate })}>
                   <Text>
                     Due Date
                   </Text>
                 </TouchableOpacity>
                 <Modal isVisible={this.state.toggleDate}>
-                    <ModelContents closeModal={() => this.setState({ toggleDate: false })} />
+                    <ModelContents closeModal={() => this.setState({ toggleDate: false })} detail />
                 </Modal>
-                {/* <View>
-                  <TextInput
-                  multiline
-                  onChangeText={this.setState((text) => this.setState({ checkboxText: text }))}
-                  onSubmitEditing={() => this.setState({ toggleCheckbox: false })}
-                  /> */}
-                </ScrollView>
-              </View>
+                <TouchableOpacity
+                  onPress={() => this.setState({ showCheckbox: !this.state.showCheckbox })}>
+                  <Text>
+                    Checklist
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.setState({ toggleAtt: !this.state.toggleAtt })}>
+                  <Text>
+                    Attachment
+                  </Text>
+                </TouchableOpacity>
+                <TextInput
+                placeholder="Add checkbox title"
+                onSubmitEditing={this.addCheckbox}
+                onChangeText={this.checkboxTitle} />
+                {this.state.Checklist.length > 0 ? (
+                  <View style={styles.checkList}>
+                  {this.state.Checklist.map((checkbox) => {
+                  <CheckBox
+                  title={checkbox.title} />;
+                  })}
+                  </View>
+                ) : <View />}
+                </View>
+              </ScrollView>
             </View>
     );
   }
@@ -89,7 +128,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   Card_title: {
-    flex: 3,
+    flex: 0.5,
     backgroundColor: 'blue',
     justifyContent: 'center',
     paddingLeft: 5,
@@ -105,8 +144,13 @@ const styles = StyleSheet.create({
   Card_Modal_Date: {
     backgroundColor: 'white',
   },
+  checkList: {
+    flex: 5,
+    backgroundColor: 'red',
+  },
 });
-const mapStateToProps = ({ token }) => ({
+const mapStateToProps = ({ token, cardDate }) => ({
   token,
+  cardDate,
 });
 export default connect(mapStateToProps)(Card_detail);
