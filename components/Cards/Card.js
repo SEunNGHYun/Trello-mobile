@@ -39,14 +39,15 @@ class Card_detail extends Component {
   }
 
   addCheckbox = () => {
-    const list = this.state.Checklist.concat([{ title: this.state.CheckboxTitle }]);
+    const list = this.state.Checklist.concat([{ title: this.state.CheckboxTitle, checked: false }]);
     this.setState({
       Checklist: list,
+      CheckboxTitle: null,
     });
   }
 
   render() {
-    console.log('this.state', this.state.Checklist);
+    console.log('this.state', this.state.Checklist.length > 0);
     const { title } = this.props.route.params;
     return (
             <View style={styles.Card}>
@@ -60,6 +61,7 @@ class Card_detail extends Component {
                   placeholder="describe"
                   value={this.state.describe}
                   onChangeText={(val) => this.setState({ describe: val })}
+                  clearButtonMode="while-editing"
                 />
                 <View>
                 <TouchableOpacity
@@ -104,16 +106,24 @@ class Card_detail extends Component {
                     Attachment
                   </Text>
                 </TouchableOpacity>
+                {this.state.showCheckbox ? (
                 <TextInput
                 placeholder="Add checkbox title"
+                value={this.state.checkboxText}
                 onSubmitEditing={this.addCheckbox}
+                clearButtonMode="while-editing"
                 onChangeText={this.checkboxTitle} />
+                )
+                  : <View />}
                 {this.state.Checklist.length > 0 ? (
                   <View style={styles.checkList}>
-                  {this.state.Checklist.map((checkbox) => {
+                  {this.state.Checklist.map((checkbox) => (
                   <CheckBox
-                  title={checkbox.title} />;
-                  })}
+                  title={checkbox.title}
+                  checked={checkbox.checked}
+                  onLongPress={() => console.log('???')}
+                  onIconPress={() => this} />
+                  ))}
                   </View>
                 ) : <View />}
                 </View>
