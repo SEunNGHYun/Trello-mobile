@@ -85,6 +85,11 @@ class Card_detail extends Component {
                     Member
                   </Text>
                 </TouchableOpacity>
+                {this.state.toggleMember
+                  ? (
+<Modal style={styles.Card_Member_View} />
+                  )
+                  : <View />}
                 <TouchableOpacity
                   onPress={() => this.setState({ toggleDate: !this.state.toggleDate })}>
                   <Text>
@@ -106,6 +111,9 @@ class Card_detail extends Component {
                     Attachment
                   </Text>
                 </TouchableOpacity>
+                {this.state.toggleAtt
+                  ? <View style={styles.Card_Att_View} />
+                  : <View />}
                 {this.state.showCheckbox ? (
                 <TextInput
                 placeholder="Add checkbox title"
@@ -148,6 +156,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
   },
   Card_lable_View: {
+    backgroundColor: 'gray',
+    width: '100%',
+  },
+  Card_Member_View: {
+    backgroundColor: 'gray',
+    width: '100%',
+  },
+  Card_Att_View: {
     backgroundColor: 'gray',
     width: '100%',
   },
