@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { CheckBox, Icon } from 'react-native-elements';
+import { CheckBox, Icon, Button } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { ScrollView } from 'react-native-gesture-handler';
 import { server } from '../utils/server';
@@ -22,8 +22,8 @@ class Card_detail extends Component {
       toggleMember: false,
       toggleDate: false,
       toggleAtt: false,
-      CheckboxTitle: null,
       showCheckbox: false,
+      CheckboxListShow: false,
       Checklist: [],
     };
   }
@@ -35,14 +35,15 @@ class Card_detail extends Component {
   }
 
   checkboxTitle = (text) => {
-    this.setState({ CheckboxTitle: text });
+    this.setState({ checkboxText: text });
   }
 
   addCheckbox = () => {
-    const list = this.state.Checklist.concat([{ title: this.state.CheckboxTitle, checked: false }]);
+    const list = this.state.Checklist.concat([{ title: this.state.checkboxText, checked: false }]);
     this.setState({
       Checklist: list,
-      CheckboxTitle: null,
+      checkboxText: null,
+      showCheckbox: true,
     });
   }
 
@@ -85,11 +86,15 @@ class Card_detail extends Component {
                     Member
                   </Text>
                 </TouchableOpacity>
-                {this.state.toggleMember
-                  ? (
-<Modal style={styles.Card_Member_View} />
-                  )
-                  : <View />}
+                <Modal isVisible={this.state.toggleMember}>
+                  <View style={styles.Card_Preparing}>
+                    <Text>준비 중</Text>
+                    <Button
+                    type="outline"
+                    title="Cancel"
+                    onPress={() => this.setState({ toggleMember: false })} />
+                  </View>
+                </Modal>
                 <TouchableOpacity
                   onPress={() => this.setState({ toggleDate: !this.state.toggleDate })}>
                   <Text>
@@ -111,9 +116,15 @@ class Card_detail extends Component {
                     Attachment
                   </Text>
                 </TouchableOpacity>
-                {this.state.toggleAtt
-                  ? <View style={styles.Card_Att_View} />
-                  : <View />}
+                <Modal isVisible={this.state.toggleAtt}>
+                  <View style={styles.Card_Preparing}>
+                    <Text>준비 중</Text>
+                    <Button
+                    type="outline"
+                    title="Cancel"
+                    onPress={() => this.setState({ toggleAtt: false })} />
+                  </View>
+                </Modal>
                 {this.state.showCheckbox ? (
                 <TextInput
                 placeholder="Add checkbox title"
@@ -123,17 +134,26 @@ class Card_detail extends Component {
                 onChangeText={this.checkboxTitle} />
                 )
                   : <View />}
-                {this.state.Checklist.length > 0 ? (
-                  <View style={styles.checkList}>
-                  {this.state.Checklist.map((checkbox) => (
-                  <CheckBox
-                  title={checkbox.title}
-                  checked={checkbox.checked}
-                  onLongPress={() => console.log('???')}
-                  onIconPress={() => this} />
-                  ))}
-                  </View>
-                ) : <View />}
+                {this.state.Checklist.length > 0
+                && (
+                <View>
+                  <TouchableOpacity onPress={() => this.setState({ CheckboxListShow: !this.state.CheckboxListShow })}>
+                    <View>
+                      <Text>CheckList</Text>
+                    </View>
+                  </TouchableOpacity>
+                    {this.state.CheckboxListShow && (
+                    <View style={styles.checkList}>
+                      {this.state.Checklist.map((checkbox) => (
+                        <CheckBox
+                          title={checkbox.title}
+                          checked={checkbox.checked}
+                          onIconPress={(checkbox) => this} />
+                      ))}
+                    </View>
+                    )}
+                </View>
+                )}
                 </View>
               </ScrollView>
             </View>
@@ -159,9 +179,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     width: '100%',
   },
-  Card_Member_View: {
-    backgroundColor: 'gray',
-    width: '100%',
+  Card_Preparing: {
+    flex: 1,
+    backgroundColor: 'white',
+    margin: 10,
+    marginBottom: 300,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   Card_Att_View: {
     backgroundColor: 'gray',
