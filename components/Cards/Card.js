@@ -9,6 +9,7 @@ import Modal from 'react-native-modal';
 import { ScrollView } from 'react-native-gesture-handler';
 import { server } from '../utils/server';
 import ModelContents from '../MakeSeries/Picker_Date';
+import { changeDate } from '../utils/Date';
 
 
 class Card_detail extends Component {
@@ -18,13 +19,15 @@ class Card_detail extends Component {
       describe: null,
       checkboxText: null,
       togglelable: false,
-      lablelist: ['black'],
+      lablelist: ['black', 'yellow', 'purple', 'green'],
       toggleMember: false,
       toggleDate: false,
       toggleAtt: false,
       showCheckbox: false,
       CheckboxListShow: false,
       Checklist: [],
+      ChoiceDate: null,
+      ChoiceLable: [],
     };
   }
 
@@ -34,8 +37,23 @@ class Card_detail extends Component {
     //   .then((res) => this.setState({ describe: res.data.describe }));
   }
 
+  choiceDate = (date, time) => {
+    const PickDate = changeDate(date, time);
+    this.setState({
+      ChoiceDate: PickDate,
+    });
+  }
+
   checkboxTitle = (text) => {
     this.setState({ checkboxText: text });
+  }
+
+  choiceLable = (lable) => {
+    console.log('lav', lable);
+    const lables = this.state.ChoiceLable.concat([lable]);
+    this.setState({
+      ChoiceLable: lables,
+    });
   }
 
   addCheckbox = () => {
@@ -48,7 +66,7 @@ class Card_detail extends Component {
   }
 
   render() {
-    console.log('this.state', this.state.Checklist.length > 0);
+    console.log('this.state', this.state.ChoiceDate);
     const { title } = this.props.route.params;
     return (
             <View style={styles.Card}>
@@ -66,24 +84,43 @@ class Card_detail extends Component {
                 />
                 <View>
                 <TouchableOpacity
+                  style={styles.Card_funcs}
                   onPress={() => this.setState({ togglelable: !this.state.togglelable })}>
-                  <Text>
-                    label
+                  <Icon
+                    type="feather"
+                    name="tag" />
+                  <Text style={styles.Card_funcs_font}>
+                    label ...
                   </Text>
                 </TouchableOpacity>
-                {this.state.togglelable ? (
+                {this.state.ChoiceLable.length > 0 && (
+                  <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                    {this.state.ChoiceLable.map((lable) => (
+                      <View style={{
+                        margin: 5, width: 40, height: 40, backgroundColor: lable, paddingLeft: 3,
+                      }} />
+                    ))}
+                  </View>
+                )}
+                {this.state.togglelable && (
                 <View style={styles.Card_lable_View}>
                   {this.state.lablelist.map((lable) => (
-                  <View style={{
-                    margin: 10, width: 40, height: 20, backgroundColor: lable,
-                  }} />
+                  <TouchableOpacity
+                  style={{
+                    margin: 10, width: '95%', height: 40, backgroundColor: lable,
+                  }}
+                  onPress={() => this.choiceLable(lable)} />
                   ))}
                 </View>
-                ) : <View />}
+                )}
                 <TouchableOpacity
+                  style={styles.Card_funcs}
                   onPress={() => this.setState({ toggleMember: !this.state.toggleMember })}>
-                  <Text>
-                    Member
+                  <Icon
+                    type="feather"
+                    name="user" />
+                  <Text style={styles.Card_funcs_font}>
+                    Member ...
                   </Text>
                 </TouchableOpacity>
                 <Modal isVisible={this.state.toggleMember}>
@@ -96,24 +133,36 @@ class Card_detail extends Component {
                   </View>
                 </Modal>
                 <TouchableOpacity
+                  style={styles.Card_funcs}
                   onPress={() => this.setState({ toggleDate: !this.state.toggleDate })}>
-                  <Text>
-                    Due Date
+                    <Icon
+                    type="feather"
+                    name="calendar" />
+                  <Text style={styles.Card_funcs_font}>
+                    Due Date ...
                   </Text>
                 </TouchableOpacity>
                 <Modal isVisible={this.state.toggleDate}>
-                    <ModelContents closeModal={() => this.setState({ toggleDate: false })} detail />
+                    <ModelContents closeModal={() => this.setState({ toggleDate: false })} detail ChangeDate={this.choiceDate} />
                 </Modal>
                 <TouchableOpacity
+                  style={styles.Card_funcs}
                   onPress={() => this.setState({ showCheckbox: !this.state.showCheckbox })}>
-                  <Text>
-                    Checklist
+                    <Icon
+                    type="feather"
+                    name="check-square" />
+                  <Text style={styles.Card_funcs_font}>
+                    Checklist ...
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  style={styles.Card_funcs}
                   onPress={() => this.setState({ toggleAtt: !this.state.toggleAtt })}>
-                  <Text>
-                    Attachment
+                    <Icon
+                    type="feather"
+                    name="paperclip" />
+                  <Text style={styles.Card_funcs_font}>
+                    Attachment ...
                   </Text>
                 </TouchableOpacity>
                 <Modal isVisible={this.state.toggleAtt}>
@@ -137,10 +186,13 @@ class Card_detail extends Component {
                 {this.state.Checklist.length > 0
                 && (
                 <View>
-                  <TouchableOpacity onPress={() => this.setState({ CheckboxListShow: !this.state.CheckboxListShow })}>
-                    <View>
-                      <Text>CheckList</Text>
-                    </View>
+                  <TouchableOpacity
+                  style={styles.Card_Checklist}
+                  onPress={() => this.setState({ CheckboxListShow: !this.state.CheckboxListShow })}>
+                      <Icon
+                      type="feather"
+                      name="check-square" />
+                      <Text style={styles.Card_Checklist_font}>CheckList</Text>
                   </TouchableOpacity>
                     {this.state.CheckboxListShow && (
                     <View style={styles.checkList}>
@@ -171,6 +223,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 5,
   },
+  Card_Checklist: {
+    backgroundColor: 'white',
+    padding: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  Card_Checklist_font: {
+    fontSize: 20,
+    marginLeft: 5,
+  },
   Card_details: {
     flex: 8,
     backgroundColor: 'green',
@@ -178,6 +240,15 @@ const styles = StyleSheet.create({
   Card_lable_View: {
     backgroundColor: 'gray',
     width: '100%',
+  },
+  Card_funcs: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 8,
+  },
+  Card_funcs_font: {
+    fontSize: 15,
+    margin: 3,
   },
   Card_Preparing: {
     flex: 1,
@@ -191,12 +262,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     width: '100%',
   },
-  Card_Modal_Date: {
-    backgroundColor: 'white',
-  },
   checkList: {
     flex: 5,
-    backgroundColor: 'red',
+    backgroundColor: 'gray',
   },
 });
 const mapStateToProps = ({ token, cardDate }) => ({

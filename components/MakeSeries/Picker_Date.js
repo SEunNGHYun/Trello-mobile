@@ -61,18 +61,33 @@ class Picker_Date extends Component {
 
   cardDataToss = () => {
     const cardData = { date: this.state.saveDate, time: this.state.saveTime, alarm: this.state.saveAlarm };
+
     this.props.SaveCardDate(cardData);
     this.props.closeModal();
   }
 
-  SaveDate = (value) => {
-    console.log('val', value);
-    this.setState({
-      ...this.state,
-      saveTime: value,
-      date: false,
-      time: false,
-    });
+  SaveDate = (key, value) => {
+    if (key === 'date') {
+      this.setState({
+        ...this.state,
+        saveDate: value,
+        date: false,
+        time: false,
+      });
+    } else if (key === 'time') {
+      this.setState({
+        ...this.state,
+        saveTime: value,
+        date: false,
+        time: false,
+      });
+    }
+  }
+
+  Change_Card_Info = () => {
+    const { saveDate, saveTime } = this.state;
+    this.props.ChangeDate(saveDate, saveTime);
+    this.props.closeModal();
   }
 
   render() {
@@ -120,16 +135,17 @@ class Picker_Date extends Component {
         <View style={{ flexDirection: 'row' }}>
         <DateTimePickerModal
           isVisible={date}
-          date={new Date()}
+          value={new Date()}
           mode="date"
           onCancel={() => this.setState({ date: false })}
-          onConfirm={this.SaveDate} />
+          onConfirm={(value) => this.SaveDate('date', value)} />
         <DateTimePickerModal
           isVisible={time}
-          date={new Date()}
           mode="time"
+          value={new Date()}
+          is24Hour
           onCancel={() => this.setState({ time: false })}
-          onConfirm={this.SaveDate} />
+          onConfirm={(value) => this.SaveDate('time', value)} />
           <View style={styles.buttons}>
         <Button
         title="cnacel"
@@ -138,7 +154,7 @@ class Picker_Date extends Component {
         <Button
         title="done"
         type="default"
-        onPress={this.cardDataToss} />
+        onPress={this.props.detail ? this.Change_Card_Info : this.cardDataToss} />
           </View>
         </View>
         </View>

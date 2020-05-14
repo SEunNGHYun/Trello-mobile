@@ -43,8 +43,8 @@ class InBoard extends Component {
           <ScrollView
           horizontal
           style={styles.Conatiners}>
-            { this.state.Containers.length === 0 ? <></>
-              : (<View style={styles.Conatiners}>{this.state.Containers.map((container) => <Container navigation={this.props.navigation} contain={container} boardId={id} />)}</View>)}
+            { this.state.Containers.length > 0
+              && (<View style={styles.Conatiners}>{this.state.Containers.map((container) => <Container navigation={this.props.navigation} contain={container} boardId={id} />)}</View>)}
               <MakeContainer boardId={id} ContainerTitle={this.addContainer} />
           </ScrollView>
         </View>
