@@ -4,7 +4,9 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { CheckBox, Icon, Button } from 'react-native-elements';
+import {
+  CheckBox, Icon, Button, Tile,
+} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { ScrollView } from 'react-native-gesture-handler';
 import { server } from '../utils/server';
@@ -56,17 +58,42 @@ class Card_detail extends Component {
     });
   }
 
-  addCheckbox = () => {
-    const list = this.state.Checklist.concat([{ title: this.state.checkboxText, checked: false }]);
+  CheckIcon = (title) => {
+    console.log('title', title);
+    const newCheklist = this.state.Checklist.map((list) => {
+      if (list.title === title) {
+        list.checked = !list.checked;
+      }
+      return list;
+    });
     this.setState({
-      Checklist: list,
-      checkboxText: null,
-      showCheckbox: true,
+      Checklist: newCheklist,
     });
   }
 
+  addCheckbox = () => {
+    let bool = true;
+    this.state.Checklist.forEach((data) => {
+      if (data.title === this.state.checkboxText) {
+        bool = false;
+      }
+    });
+    if (bool) {
+      const list = this.state.Checklist.concat([{ title: this.state.checkboxText, checked: false }]);
+      this.setState({
+        ...this.state,
+        Checklist: list,
+        checkboxText: null,
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        checkboxText: null,
+      });
+    }
+  }
+
   render() {
-    console.log('this.state', this.state.ChoiceDate);
     const { title } = this.props.route.params;
     return (
             <View style={styles.Card}>
@@ -200,7 +227,7 @@ class Card_detail extends Component {
                         <CheckBox
                           title={checkbox.title}
                           checked={checkbox.checked}
-                          onIconPress={(checkbox) => this} />
+                          onIconPress={() => this.CheckIcon(checkbox.title)} />
                       ))}
                     </View>
                     )}
