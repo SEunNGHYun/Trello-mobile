@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import 'react-native-gesture-handler';
+import { Header } from 'react-native-elements';
 import { AsyncStorage } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -29,7 +30,7 @@ function StackHome() {
       <Stack.Screen
       name="Home"
       component={Home}
-      options={{ headerTitle: (props) => <Basic_haeder {...props} title="Home" /> }} />
+      options={{ headerShown: false }} />
       <Stack.Screen name="InBoard" component={InBoard} options={{ headerTitle: (props) => <Basic_haeder {...props} title="InBoard" /> }} />
       <Stack.Screen name="MakeBoard" component={MakeBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Board" create="Board" navigation={navigation} /> })} />
       <Stack.Screen name="MakeCard" component={MakeCard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Card" create="Card" navigation={navigation} /> })} />

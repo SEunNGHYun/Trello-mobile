@@ -4,12 +4,12 @@ import { View, Text, StyleSheet } from 'react-native';
 function Boardtitle({ title, id }) {
   return (
         <View style={styles.boardTitle}>
-         <View style={styles.box} />
-         <Text
+        <View style={styles.box} />
+          <Text
             id={id}
             style={{ marginLeft: 10, fontSize: 20 }}>
               {title}
-         </Text>
+          </Text>
         </View>
   );
 }

@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import {
   View, Text, StyleSheet, AsyncStorage,
 } from 'react-native';
+import { Header } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
+import HeaderRight from './utils/CustomHeader_Right';
+import HeaderLeft from './utils/CustomHeader_Left';
 import { server } from './utils/server';
 
 class Home extends Component {
@@ -29,6 +32,12 @@ class Home extends Component {
   render() {
     return (
       <View style={styles.total}>
+        <Header
+          containerStyle={{
+            height: 55, width: '100%', justifyContent: 'center',
+          }}
+          leftComponent={<HeaderLeft title="Home" />}
+          rightComponent={<HeaderRight />} />
           <View style={styles.Homebox}>
               <Text style={{ fontSize: 20 }}>
                   보드를 만들어 보는 것은 어떨까요??

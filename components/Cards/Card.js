@@ -5,7 +5,7 @@ import {
 import axios from 'axios';
 import { connect } from 'react-redux';
 import {
-  CheckBox, Icon, Button, Tile,
+  CheckBox, Icon, Button,
 } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { ScrollView } from 'react-native-gesture-handler';
