@@ -13,11 +13,11 @@ import MakeBoard from './MakeSeries/MakeBoard';
 import MakeCard from './MakeSeries/MakeCard';
 import Login from './FirstPages/LoginPage';
 import Signup from './FirstPages/SignupPage';
-import UserPage from './UserPage';
+import UserPage from './userPage/UserPage';
 import Home from './Home';
-import Basic_haeder from './utils/BasicHeader';
+import Basic_haeder from './Headers/BasicHeader';
 import Card_Detail from './Cards/Card';
-import CPHs from './utils/CreatePageHeaders';
+import CPHs from './Headers/CreatePageHeaders';
 import InBoard from './Boards/InBoard';
 import First from './FirstPages/FirstPage';
 
@@ -31,21 +31,21 @@ function StackHome() {
       name="Home"
       component={Home}
       options={{ headerShown: false }} />
-      <Stack.Screen name="InBoard" component={InBoard} options={{ headerTitle: (props) => <Basic_haeder {...props} title="InBoard" /> }} />
+      <Stack.Screen name="InBoard" component={InBoard} options={{ headerShown: false }} />
       <Stack.Screen name="MakeBoard" component={MakeBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Board" create="Board" navigation={navigation} /> })} />
       <Stack.Screen name="MakeCard" component={MakeCard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Card" create="Card" navigation={navigation} /> })} />
-      <Stack.Screen name="Card_Detail" component={Card_Detail} options={{ headerTitle: (props) => <Basic_haeder {...props} title="Card" /> }} />
+      <Stack.Screen name="Card_Detail" component={Card_Detail} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
 function StackBoard() {
   return (
       <Stack.Navigator>
-        <Stack.Screen name="Board" component={Board} options={{ headerTitle: (props) => <Basic_haeder {...props} title="Boards" /> }} />
-        <Stack.Screen name="InBoard" component={InBoard} options={{ headerTitle: (props) => <Basic_haeder {...props} title="InBoard" /> }} />
+        <Stack.Screen name="Board" component={Board} options={{ headerShown: false }} />
+        <Stack.Screen name="InBoard" component={InBoard} options={{ headerShown: false }} />
         <Stack.Screen name="MakeBoard" component={MakeBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Board" create="Board" navigation={navigation} /> })} />
         <Stack.Screen name="MakeCard" component={MakeCard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Card" create="Card" navigation={navigation} /> })} />
-        <Stack.Screen name="Card_Detail" component={Card_Detail} options={{ headerTitle: (props) => <Basic_haeder {...props} title="Card" /> }} />
+        <Stack.Screen name="Card_Detail" component={Card_Detail} options={{ headerShown: false }} />
       </Stack.Navigator>
   );
 }

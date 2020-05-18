@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, TouchableHighlight, ScrollView, alert,
+  View, Text, StyleSheet, TouchableOpacity, ScrollView, alert,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Icon, Header } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
 import BoardsTitle from './Boardtitle';
 import { boardlist } from '../fakedata';
+import HeaderLeft from '../Headers/CustomHeader_Left';
+import HeaderRight from '../Headers/CustomHeader_Right';
 import { server } from '../utils/server';
 
 class Main extends Component {
@@ -40,16 +42,22 @@ class Main extends Component {
     const { BoardList } = this.state;
     return (
       <View style={styles.total}>
+        <Header
+          containerStyle={{
+            height: 55, width: '100%',
+          }}
+          leftComponent={<HeaderLeft title="Boards" navigation={this.props.navigation} />}
+          rightComponent={<HeaderRight />} />
       <ScrollView>
         <View style={styles.Home}>
           {BoardList.length > 0 ? (
           <>
           {BoardList.map((board) => (
-            <TouchableHighlight
+            <TouchableOpacity
             onPress={() => this.props.navigation.navigate('InBoard', { id: board.id, name: board.title })}
             onLongPress={this.longPressButton}>
             <BoardsTitle title={board.title} id={board.id} />
-            </TouchableHighlight>
+            </TouchableOpacity>
           ))}
           </>
           ) : (
@@ -59,12 +67,12 @@ class Main extends Component {
           )}
         </View>
       </ScrollView>
-        <ActionButton buttonColor="rgba(231,76,60,1)">
-          <ActionButton.Item title="Board" buttonColor="#9b59b6" onPress={() => this.props.navigation.navigate('Boards', { screen: 'MakeBoard' })}>
-            <Icon name="ei-navicon" style={styles.buttons} />
+        <ActionButton buttonColor="#02b625">
+          <ActionButton.Item title="Board" buttonColor="#02b625" onPress={() => this.props.navigation.navigate('Boards', { screen: 'MakeBoard' })}>
+            <Icon type="feather" name="layout" color="white" />
           </ActionButton.Item>
-          <ActionButton.Item title="Card" buttonColor="#3498db" onPress={() => this.props.navigation.navigate('Boards', { screen: 'MakeCard' })}>
-            <Icon name="ios-photos" style={styles.buttons} />
+          <ActionButton.Item title="Card" buttonColor="#02b625" onPress={() => this.props.navigation.navigate('Boards', { screen: 'MakeCard' })}>
+            <Icon type="feather" name="trello" color="white" />
           </ActionButton.Item>
         </ActionButton>
       </View>
@@ -79,7 +87,6 @@ const styles = StyleSheet.create({
   buttons: {
     fontSize: 20,
     height: 22,
-    color: 'white',
   },
   Home: {
     flex: 8,

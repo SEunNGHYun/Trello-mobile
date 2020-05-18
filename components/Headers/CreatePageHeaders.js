@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import axios from 'axios';
 import { LogoutAuth } from '../Redux/Reducer';
-import { server } from './server';
+import { server } from '../utils/server';
 
 class Header extends Component {
   logout = async () => {

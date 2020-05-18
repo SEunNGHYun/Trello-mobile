@@ -4,8 +4,10 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { Button } from 'react-native-elements';
+import { Header } from 'react-native-elements';
 import { server } from '../utils/server';
+import HeaderLeft from '../Headers/CustomHeader_Left';
+import HeaderRight from '../Headers/CustomHeader_Right';
 import MakeContainer from '../MakeSeries/MakeContainer';
 import Container from '../Containers/Containers';
 
@@ -36,12 +38,20 @@ class InBoard extends Component {
   }
 
   render() {
-    console.log('InBoard', this.state.Containers);
-    const { id } = this.props.route.params;
+    console.log('InBoard', this.props.route.params);
+    const { id, name } = this.props.route.params;
+    console.log('InBoard', name);
     return (
         <View>
+           <Header
+          containerStyle={{
+            height: 55, width: '100%', justifyContent: 'center',
+          }}
+          leftComponent={<HeaderLeft title={name} navigation={this.props.navigation} InBoard />}
+          rightComponent={<HeaderRight InBoard />} />
           <ScrollView
           horizontal
+          showsHorizontalScrollIndicator={false}
           style={styles.Conatiners}>
             { this.state.Containers.length > 0
               && (<View style={styles.Conatiners}>{this.state.Containers.map((container) => <Container navigation={this.props.navigation} contain={container} boardId={id} />)}</View>)}
