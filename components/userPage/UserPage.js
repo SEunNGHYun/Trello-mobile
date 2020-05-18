@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, AsyncStorage, TextInput,
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Header, Icon } from 'react-native-elements';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import RNdialog from 'react-native-dialog';
 import RNmodal from 'react-native-modal';
-import { server } from './utils/server';
-import { LogoutAuth } from './Redux/Reducer';
+import { server } from '../utils/server';
+import Simple_Header from '../Headers/SimpleHeader';
+import { LogoutAuth } from '../Redux/Reducer';
 
 
 class UserPage extends Component {
@@ -85,6 +86,17 @@ class UserPage extends Component {
     const { userName, userEmail } = this.state.userData;
     return (
             <View style={{ flex: 1 }}>
+              <Header
+              containerStyle={{
+                height: 55,
+              }}
+              leftComponent={(
+              <TouchableOpacity
+              style={{ marginBottom: 30.5 }}
+              onPress={() => this.props.navigation.goBack()}>
+                <Icon type="feather" name="arrow-left" color="white" size={27} />
+              </TouchableOpacity>
+              )} />
                 <View style={styles.userInfo}>
                   <View style={styles.userNameCircle}>
                 <Text style={styles.username}>
@@ -127,7 +139,7 @@ class UserPage extends Component {
                       placeholder="Name"
                       onChangeText={(text) => this.setState({ editName: text })} />
                     <TextInput
-                      placeholder="PassWord"
+                      placeholder="Password"
                       onChangeText={(text) => this.setState({ editPass: text })}
                     />
                       <View style={styles.modalButtons}>

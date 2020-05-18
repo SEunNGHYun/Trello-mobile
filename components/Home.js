@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import {
   View, Text, StyleSheet, AsyncStorage,
 } from 'react-native';
-import { Header } from 'react-native-elements';
+import { Header, Icon } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
-import HeaderRight from './utils/CustomHeader_Right';
-import HeaderLeft from './utils/CustomHeader_Left';
+import HeaderRight from './Headers/CustomHeader_Right';
+import HeaderLeft from './Headers/CustomHeader_Left';
 import { server } from './utils/server';
 
 class Home extends Component {
@@ -36,19 +35,19 @@ class Home extends Component {
           containerStyle={{
             height: 55, width: '100%', justifyContent: 'center',
           }}
-          leftComponent={<HeaderLeft title="Home" />}
+          leftComponent={<HeaderLeft title="Home" navigation={this.props.navigation} />}
           rightComponent={<HeaderRight />} />
           <View style={styles.Homebox}>
               <Text style={{ fontSize: 20 }}>
                   보드를 만들어 보는 것은 어떨까요??
               </Text>
           </View>
-        <ActionButton buttonColor="rgba(231,76,60,1)">
-          <ActionButton.Item title="Board" buttonColor="#9b59b6" onPress={() => this.props.navigation.navigate('MakeBoard')}>
-            <Icon name="archive" style={styles.buttons} />
+        <ActionButton buttonColor="#02b625">
+          <ActionButton.Item title="Board" buttonColor="#02b625" onPress={() => this.props.navigation.navigate('MakeBoard')}>
+            <Icon type="feather" name="layout" style={styles.buttons} color="white" />
           </ActionButton.Item>
-          <ActionButton.Item title="Card" buttonColor="#3498db" onPress={() => this.props.navigation.navigate('MakeCard')}>
-            <Icon name="ios-photos" style={styles.buttons} />
+          <ActionButton.Item title="Card" buttonColor="#02b625" onPress={() => this.props.navigation.navigate('MakeCard')}>
+            <Icon type="feather" name="trello" style={styles.buttons} color="white" />
           </ActionButton.Item>
         </ActionButton>
       </View>

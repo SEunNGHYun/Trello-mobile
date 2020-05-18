@@ -5,10 +5,11 @@ import {
 import axios from 'axios';
 import { connect } from 'react-redux';
 import {
-  CheckBox, Icon, Button,
+  CheckBox, Icon, Button, Header,
 } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { ScrollView } from 'react-native-gesture-handler';
+import Simple_Header from '../Headers/SimpleHeader';
 import { server } from '../utils/server';
 import ModelContents from '../MakeSeries/Picker_Date';
 import { changeDate } from '../utils/Date';
@@ -97,11 +98,9 @@ class Card_detail extends Component {
     const { title } = this.props.route.params;
     return (
             <View style={styles.Card}>
-              <View style={styles.Card_title}>
-                <Text
-                style={{ fontSize: 30 }}>{title}
-                </Text>
-              </View>
+              <Header
+              containerStyle={styles.Card_title}
+              leftComponent={<Simple_Header navigation={this.props.navigation} title={title} />} />
               <ScrollView style={styles.Card_details}>
                 <TextInput
                   placeholder="describe"
@@ -243,12 +242,11 @@ class Card_detail extends Component {
 const styles = StyleSheet.create({
   Card: {
     flex: 1,
+    backgroundColor: 'blue',
   },
   Card_title: {
     flex: 0.5,
-    backgroundColor: 'blue',
-    justifyContent: 'center',
-    paddingLeft: 5,
+    backgroundColor: '#7ed3fc',
   },
   Card_Checklist: {
     backgroundColor: 'white',
@@ -262,7 +260,7 @@ const styles = StyleSheet.create({
   },
   Card_details: {
     flex: 8,
-    backgroundColor: 'green',
+    backgroundColor: 'white',
   },
   Card_lable_View: {
     backgroundColor: 'gray',
