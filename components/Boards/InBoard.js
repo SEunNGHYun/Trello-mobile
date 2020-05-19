@@ -43,12 +43,12 @@ class InBoard extends Component {
     console.log('InBoard', name);
     return (
         <View>
-           <Header
+          <Header
           containerStyle={{
             height: 55, width: '100%', justifyContent: 'center',
           }}
           leftComponent={<HeaderLeft title={name} navigation={this.props.navigation} InBoard />}
-          rightComponent={<HeaderRight InBoard />} />
+          rightComponent={<HeaderRight InBoard navigation={this.props.navigation} />} />
           <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}

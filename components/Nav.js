@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import 'react-native-gesture-handler';
-import { Header } from 'react-native-elements';
 import { AsyncStorage } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,11 +14,11 @@ import Login from './FirstPages/LoginPage';
 import Signup from './FirstPages/SignupPage';
 import UserPage from './userPage/UserPage';
 import Home from './Home';
-import Basic_haeder from './Headers/BasicHeader';
 import Card_Detail from './Cards/Card';
 import CPHs from './Headers/CreatePageHeaders';
 import InBoard from './Boards/InBoard';
 import First from './FirstPages/FirstPage';
+import Search from './SearchPage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -35,6 +34,7 @@ function StackHome() {
       <Stack.Screen name="MakeBoard" component={MakeBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Board" create="Board" navigation={navigation} /> })} />
       <Stack.Screen name="MakeCard" component={MakeCard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Card" create="Card" navigation={navigation} /> })} />
       <Stack.Screen name="Card_Detail" component={Card_Detail} options={{ headerShown: false }} />
+      <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
@@ -46,6 +46,7 @@ function StackBoard() {
         <Stack.Screen name="MakeBoard" component={MakeBoard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Board" create="Board" navigation={navigation} /> })} />
         <Stack.Screen name="MakeCard" component={MakeCard} options={({ navigation }) => ({ headerTitle: (props) => <CPHs {...props} title="create Card" create="Card" navigation={navigation} /> })} />
         <Stack.Screen name="Card_Detail" component={Card_Detail} options={{ headerShown: false }} />
+        <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
       </Stack.Navigator>
   );
 }

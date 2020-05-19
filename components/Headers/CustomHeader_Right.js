@@ -9,7 +9,7 @@ export default class CustomHeader_Right extends Component {
               flexDirection: 'row', alignItems: 'center', marginBottom: 22,
             }}>
                 <TouchableOpacity
-                onPress={() => console.log('뿅')}
+                onPress={() => this.props.navigation.navigate('Search')}
                 style={{ marginRight: 20 }}>
                 <Icon
                 type="feather"
