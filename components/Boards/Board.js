@@ -47,7 +47,7 @@ class Main extends Component {
             height: 55, width: '100%',
           }}
           leftComponent={<HeaderLeft title="Boards" navigation={this.props.navigation} />}
-          rightComponent={<HeaderRight />} />
+          rightComponent={<HeaderRight navigation={this.props.navigation} />} />
       <ScrollView>
         <View style={styles.Home}>
           {BoardList.length > 0 ? (

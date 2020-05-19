@@ -36,7 +36,7 @@ class Home extends Component {
             height: 55, width: '100%', justifyContent: 'center',
           }}
           leftComponent={<HeaderLeft title="Home" navigation={this.props.navigation} />}
-          rightComponent={<HeaderRight />} />
+          rightComponent={<HeaderRight navigation={this.props.navigation} />} />
           <View style={styles.Homebox}>
               <Text style={{ fontSize: 20 }}>
                   보드를 만들어 보는 것은 어떨까요??

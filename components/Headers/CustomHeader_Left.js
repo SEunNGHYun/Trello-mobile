@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default class CustomHeader_Left extends Component {
-  render() {
-    const { navigation, title, InBoard } = this.props;
-    return (
+export default function CustomHeader_Left({ navigation, title, InBoard }) {
+  return (
             <View style={{
               flexDirection: 'row', alignItems: 'center', marginBottom: 22, width: title.length * 30,
             }}>
@@ -31,6 +29,5 @@ export default class CustomHeader_Left extends Component {
                     {title}
                 </Text>
             </View>
-    );
-  }
+  );
 }
