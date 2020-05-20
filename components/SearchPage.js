@@ -3,34 +3,49 @@ import {
   View, StyleSheet, TouchableOpacity, Dimensions,
 } from 'react-native';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import { Header, Icon, Input } from 'react-native-elements';
+import { debounce } from 'lodash';
 
-function SearchPage(props) {
-  const [val, setVal] = useState('');
+class SearchPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { searchValue: null };
+    this.searchInputValue = debounce(this.Debounce, 500);
+  }
 
-  return (
-    console.log('val', val),
+
+  Debounce(value) {
+    axios.post(`search/${value}`, { headers: { authorization: this.props.token } })
+      .then((res) => {
+        this.setState(
+          { searchValue: res.date },
+        );
+      });
+  }
+
+  render() {
+    return (
         <View style={{ flex: 1 }}>
         <Header
         containerStyle={styles.header}
         leftComponent={(
             <TouchableOpacity
             style={{ marginBottom: 30.5 }}
-            onPress={() => props.navigation.goBack()}>
+            onPress={() => this.props.navigation.goBack()}>
             <Icon type="feather" name="arrow-left" color="white" size={27} />
             </TouchableOpacity>
             )}
         centerComponent={(
         <Input
         placeholder="Search..."
-        leftIcon
         containerStyle={styles.searchBar}
-        onChangeText={setVal}
-        value={val} />
+        onChangeText={this.searchInputValue} />
         )} />
         <View style={styles.others} />
         </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -40,5 +55,5 @@ const styles = StyleSheet.create({
   others: { flex: 9 },
   searchBar: { marginLeft: 30, width: Dimensions.get('window').width - 60, marginBottom: 20 },
 });
-
-export default SearchPage;
+const mapStateToProps = ({ token }) => ({ token });
+export default connect(mapStateToProps)(SearchPage);
