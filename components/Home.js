@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   View, Text, StyleSheet, AsyncStorage,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Header, Icon } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 import axios from 'axios';
@@ -10,15 +11,8 @@ import HeaderLeft from './Headers/CustomHeader_Left';
 import { server } from './utils/server';
 
 class Home extends Component {
-  constructor({ navigation }) {
-    super(navigation);
-    this.state = {
-    };
-  }
-
-  async componentDidMount() {
-    const auth = await AsyncStorage.getItem('user_Token');
-    axios.get(`${server}/board/list`, { headers: { authorization: auth } })
+  componentDidMount() {
+    axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
       .then((res) => {
         if (res.status >= 200) {
           if (res.data.length > 0) {
@@ -78,4 +72,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+const mapStateToProps = ({ token }) => ({ token });
+export default connect(mapStateToProps)(Home);
