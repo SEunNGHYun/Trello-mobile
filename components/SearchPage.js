@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View, StyleSheet, TouchableOpacity, Dimensions,
 } from 'react-native';
@@ -25,6 +25,7 @@ class SearchPage extends React.Component {
   }
 
   render() {
+    console.log('token', this.props);
     return (
         <View style={{ flex: 1 }}>
         <Header

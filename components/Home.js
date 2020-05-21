@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, AsyncStorage,
+  View, Text, StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Header, Icon } from 'react-native-elements';
