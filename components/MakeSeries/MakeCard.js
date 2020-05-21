@@ -5,13 +5,16 @@ import {
 import axios from 'axios';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
-import { Input, Icon } from 'react-native-elements';
+import { Input, Icon, Header } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 import {
   SaveCardName, SaveCardDescription, SaveCardDate, SaveContainerID,
 } from '../Redux/Reducer';
+import HeaderLeft from '../Headers/MakePageHeaders_L';
+import HeaderRight from '../Headers/MakePageHeaders_R';
 import { server } from '../utils/server';
+import { boardslist } from '../fakedata';
 import ModelContents from './Picker_Date';
 
 
@@ -22,9 +25,10 @@ class MakeCard extends Component {
       boardTitles: [],
       containerTitiles: [],
       containerID: null,
-      containerDisalbe: false,
+      enabled: true,
       cardContents: {},
       dateModal: false,
+      makeIconDisable: false,
     };
   }
 
@@ -34,55 +38,75 @@ class MakeCard extends Component {
   }
 
   getBoardTitle = () => {
-    axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
-      .then((res) => {
-        if (res.status > 200) {
-          this.setState({
-            ...this.state,
-            boardTitles: res.data.boardsTitles,
-          });
-        }
-      });
+    this.setState({
+      ...this.state,
+      boardTitles: boardslist,
+    });
+    // axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
+    //   .then((res) => {
+    //     if (res.status > 200) {
+    //       this.setState({
+    //         ...this.state,
+    //         boardTitles: res.data.boardsTitles,
+    //       });
+    //     }
+    //   });
   }
 
 
-  getContainerTitle = (id) => {
+  getContainers = (id) => {
     this.setState({
-      ...this.state,
-      containerDisalbe: true,
+      enabled: false,
     });
-    axios.get(`${server}/container?board_id=${id}`, { headers: { authorization: this.props.token } })
-      .then((res) => {
-        if (res.status === 200) {
-          this.setState({
-            ...this.state,
-            containerTitiles: res.data,
-          });
-        }
-      });
+    // axios.get(`${server}/container?board_id=${id}`, { headers: { authorization: this.props.token } })
+    //   .then((res) => {
+    //     if (res.status === 200) {
+    //       this.setState({
+    //         ...this.state,
+    //         containerTitiles: res.data,
+    //       });
+    //     }
+    //   });
   }
 
   saveContainerId = (ContainerID) => {
+    this.setState({
+      useSelectContainer: true,
+    });
+    this.ChangeIconDisable();
+  }
+
+  ChangeIconDisable = () => {
+    this.setState({
+      enabled: true,
+    });
   }
 
   render() {
+    console.log('board', this.state.enabled);
     return (
             <View style={styles.total}>
+              <Header
+              containerStyle={{
+                height: 55, width: '100%',
+              }}
+              leftComponent={<HeaderLeft title="Create Card" navigation={this.props.navigation} />}
+              rightComponent={<HeaderRight navigation={this.props.navigation} able={this.state.enabled} where="Card" Change={this.ChangeIconDisable} />} />
               <View style={styles.selectBox}>
                 <Text>
                   Select Board
                 </Text>
                 <RNPickerSelect
-                onValueChange={(boardId) => this.getContainerTitle(boardId)}
-                items={this.state.boardTitles}
+                onValueChange={(pick) => this.getContainers(pick)}
+                items={boardslist}
                 placeholder={{ label: 'select Board', value: null }} />
               <Text style={styles.containerText}>
                   Select Container
               </Text>
               <RNPickerSelect
-                disabled={this.state.containerDisalbe}
-                onValueChange={(containerId) => this.saveContainerId(containerId)}
-                items={this.state.containerTitiles}
+                disabled={this.state.enabled}
+                onValueChange={(pick) => this.saveContainerId(pick)}
+                items={boardslist}
                 placeholder={{ label: 'select Container', value: null }} />
               </View>
               <View style={{ flex: 1, marginBottom: 50 }} />
@@ -139,7 +163,6 @@ const styles = StyleSheet.create({
   trueInputCardData: {
     width: '100%',
     height: '60%',
-    backgroundColor: 'blue',
     justifyContent: 'center',
     alignItems: 'center',
   },

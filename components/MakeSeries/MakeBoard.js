@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { Input } from 'react-native-elements';
+import { Input, Header } from 'react-native-elements';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
+import HeaderLeft from '../Headers/MakePageHeaders_L';
+import HeaderRight from '../Headers/MakePageHeaders_R';
 import { SaveBoardTitle } from '../Redux/Reducer';
 import { server } from '../utils/server';
-
 
 class MakeBoard extends Component {
   state = {
     Boardtitle: '',
     Disclosure: 'private',
+    IconDisalbe: false,
   }
 
   ChangeStates_ChangeRedux = (key, value) => {
@@ -39,9 +41,27 @@ class MakeBoard extends Component {
       });
   }
 
+  ChangeDisable = () => {
+    if (this.state.Boardtitle.length > 0) {
+      this.setState({
+        IconDisalbe: true,
+      });
+    } else {
+      this.setState({
+        IconDisalbe: false,
+      });
+    }
+  }
+
   render() {
     return (
-        <View>
+        <View style={{ flex: 1 }}>
+          <Header
+          containerStyle={{
+            height: 55, width: '100%',
+          }}
+          leftComponent={<HeaderLeft title="Create Board" navigation={this.props.navigation} />}
+          rightComponent={<HeaderRight navigation={this.props.navigation} where="Board" title={this.state.Boardtitle} />} />
           <View style={styles.value}>
             <View
             style={styles.NameInput}>
@@ -73,7 +93,6 @@ const styles = StyleSheet.create({
   value: {
     margin: 20,
     marginTop: 50,
-    backgroundColor: 'green',
   },
   create: {
     alignItems: 'flex-end',
