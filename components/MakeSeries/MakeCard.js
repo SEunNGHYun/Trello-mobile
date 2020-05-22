@@ -25,7 +25,7 @@ class MakeCard extends Component {
       boardTitles: [],
       containerTitiles: [],
       containerID: null,
-      enabled: true,
+      enabled: false,
       cardContents: {},
       dateModal: false,
       makeIconDisable: false,
