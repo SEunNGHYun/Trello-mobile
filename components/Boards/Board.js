@@ -24,14 +24,17 @@ class Main extends Component {
     this.setState({
       BoardList: boardlist,
     });
-    // axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
-    //   .then((res) => {
-    //     if (res.status >= 200) {
-    //       this.setState({
-    //         BoardList: boardlist,
-    //       });
-    //     }
-    //   });
+    axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
+      .then((res) => {
+        if (res.status >= 200) {
+          this.setState({
+            BoardList: boardlist,
+          });
+        }
+      })
+      .catch(() => {
+        console.log("에렁")
+      });
   }
 
   longPressButton = () => {

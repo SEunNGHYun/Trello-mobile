@@ -36,8 +36,11 @@ class Card_detail extends Component {
 
 
   componentDidMount() {
-    // axios.get(`${server}/card/container_id=${this.props.container_id}`, { headers: { authorization: this.props.token } })
-    //   .then((res) => this.setState({ describe: res.data.describe }));
+    axios.get(`${server}/card/container_id=${this.props.container_id}`, { headers: { authorization: this.props.token } })
+      .then((res) => this.setState({ describe: res.data.describe }))
+      .catch(() => {
+        console.log('에렁');
+      });
   }
 
   choiceDate = (date, time) => {

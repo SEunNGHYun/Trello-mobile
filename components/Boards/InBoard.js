@@ -21,12 +21,15 @@ class InBoard extends Component {
   }
 
   componentDidMount() {
-    // axios.get(`${server}/container?board_id=${this.props.id}`, { headers: { authorization: this.props.token } })
-    //   .then((Res) => {
-    //     this.setState({
-    //       Containers: Res.data,
-    //     });
-    //   });
+    axios.get(`${server}/container?board_id=${this.props.id}`, { headers: { authorization: this.props.token } })
+      .then((Res) => {
+        this.setState({
+          Containers: Res.data,
+        });
+      })
+      .catch(() => {
+        console.log('에렁');
+      });
   }
 
   addContainer= (createObj) => {
