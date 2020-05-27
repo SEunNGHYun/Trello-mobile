@@ -42,15 +42,15 @@ class MakeCard extends Component {
       ...this.state,
       boardTitles: boardslist,
     });
-    // axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
-    //   .then((res) => {
-    //     if (res.status > 200) {
-    //       this.setState({
-    //         ...this.state,
-    //         boardTitles: res.data.boardsTitles,
-    //       });
-    //     }
-    //   });
+    axios.get(`${server}/boards`, { headers: { authorization: this.props.token } })
+      .then((res) => {
+        if (res.status > 200) {
+          this.setState({
+            ...this.state,
+            boardTitles: res.data.boardsTitles,
+          });
+        }
+      });
   }
 
 
