@@ -29,12 +29,8 @@ class UserPage extends Component {
   }
 
   componentDidMount() {
-    // axios.get(`${server}/user`, { headers: { authorization: this.props.token } })
-    //   .then((Res) => this.setState({ userData: Res.data }));
-
-    this.setState({
-      userData: { userName: 'yun', userEmail: 'ysh122@gmail.com' },
-    });
+    axios.get(`${server}/users`, { headers: { authorization: this.props.token } })
+      .then((Res) => this.setState({ userData: Res.data }));
   }
 
   submitEditData = () => {
@@ -44,7 +40,7 @@ class UserPage extends Component {
       userData: { ...this.state.userData, userName: editData.name },
       editBool: false,
     });
-    // axios.patch(`${server}/user/edit`, editData, { headers: { authorization: this.props.token } })
+    // axios.patch(`${server}/users/edit`, editData, { headers: { authorization: this.props.token } })
     //   .then((Res) => {
     //     if (Res.status === 201) {
     //       this.setState({
@@ -58,7 +54,7 @@ class UserPage extends Component {
 
   Delete = () => {
     this.props.logout();
-    // axios.delete(`${server}/user/delete`, { headers: { authorization: this.props.token } })
+    // axios.delete(`${server}/users/delete`, { headers: { authorization: this.props.token } })
     //   .then((res) => {
     //     if (res.status === 201) {
     //       this.props.logout();

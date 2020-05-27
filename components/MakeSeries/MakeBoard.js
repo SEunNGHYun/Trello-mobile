@@ -32,11 +32,13 @@ class MakeBoard extends Component {
   }
 
   createBoard = () => {
-    const Title = { title: this.state.boardTitle };
-    axios.post(`${server}/board/create`, Title, { headers: { authorization: this.props.token } })
+    console.log('클뤽', this.state.Disclosure);
+    const Title = { title: this.state.Boardtitle, visibility: this.state.Disclosure };
+    axios.post(`${server}/boards`, Title, { headers: { authorization: this.props.token } })
       .then((res) => {
-        if (res.status > 200) {
-          this.props.navigation.navigate('Boards');
+        if (res.status >= 200) {
+          console.log(res.data.id);
+          this.props.navigation.navigate('InBoard', { id: res.data.id, name: res.data.title });
         }
       });
   }
@@ -61,7 +63,7 @@ class MakeBoard extends Component {
             height: 55, width: '100%',
           }}
           leftComponent={<HeaderLeft title="Create Board" navigation={this.props.navigation} />}
-          rightComponent={<HeaderRight navigation={this.props.navigation} where="Board" title={this.state.Boardtitle} />} />
+          rightComponent={<HeaderRight create={this.createBoard} navigation={this.props.navigation} where="Board" title={this.state.Boardtitle} />} />
           <View style={styles.value}>
             <View
             style={styles.NameInput}>

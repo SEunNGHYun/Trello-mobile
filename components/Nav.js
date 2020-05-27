@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { LoginAuth } from './Redux/Reducer';
+import { LoginAuth, SaveToken } from './Redux/Reducer';
 import Board from './Boards/Board';
 import MakeBoard from './MakeSeries/MakeBoard';
 import MakeCard from './MakeSeries/MakeCard';
@@ -29,7 +29,7 @@ function StackHome() {
       name="Home"
       component={Home}
       options={{ headerShown: false }} />
-      {/* <Stack.Screen name="Board" component={Board} options={{ headerShown: false }} /> */}
+      <Stack.Screen name="Board" component={Board} options={{ headerShown: false }} />
       <Stack.Screen name="InBoard" component={InBoard} options={{ headerShown: false }} />
       <Stack.Screen name="MakeBoard" component={MakeBoard} options={{ headerShown: false }} />
       <Stack.Screen name="MakeCard" component={MakeCard} options={{ headerShown: false }} />
@@ -61,6 +61,7 @@ class Nav extends Component {
   }
 
   render() {
+    console.log(' this.props.Login', this.props.Login);
     return (
       <NavigationContainer>
       <SafeAreaProvider>
@@ -92,6 +93,9 @@ const mapStateToProps = ({ SavetokenInStorage }) => ({
 const mapDispatchToProps = (dispatch) => ({
   loginCheck: () => {
     dispatch(LoginAuth());
+  },
+  SaveToken: (token) => {
+    dispatch(SaveToken(token));
   },
 });
 

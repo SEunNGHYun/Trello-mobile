@@ -12,12 +12,10 @@ import { server } from './utils/server';
 
 class Home extends Component {
   componentDidMount() {
-    axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
+    axios.get(`${server}/boards`, { headers: { authorization: this.props.token } })
       .then((res) => {
         if (res.status >= 200) {
-          if (res.data.length > 0) {
-            return this.navigation.navigate('Boards');
-          }
+          return this.props.navigation.navigate('Board', { data: res.data.list });
         }
       });
   }
@@ -72,5 +70,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ token }) => ({ token });
+const mapStateToProps = ({ token }) => ({
+  token,
+});
 export default connect(mapStateToProps)(Home);

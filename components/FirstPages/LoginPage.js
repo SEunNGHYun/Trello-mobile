@@ -30,21 +30,18 @@ class Login extends Component {
         loginFailAlert: true,
       });
     } else {
-      this.props.loginCheck();
-      this.props.SaveToken('token');
-      await AsyncStorage.setItem('user_Token', 'token');
-      // axios.post(`${server}/user/login`, { email, password })
-      //   .then(async (res) => {
-      //     if (res.status === 201) {
-      //       this.props.loginCheck();
-      //       this.props.SaveToken(res.data.token);
-      //       await AsyncStorage.setItem('user_Token', res.data.token);
-      //     } else {
-      //       this.setState({
-      //         errAlert: false,
-      //       });
-      //     }
-      //   });
+      axios.post(`${server}/users/login`, { email, password })
+        .then(async (res) => {
+          if (res.status === 201) {
+            this.props.loginCheck();
+            this.props.SaveToken(res.data.token);
+            await AsyncStorage.setItem('user_Token', res.data.token);
+          } else {
+            this.setState({
+              errAlert: false,
+            });
+          }
+        });
     }
   }
 

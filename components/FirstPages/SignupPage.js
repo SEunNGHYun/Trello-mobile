@@ -31,7 +31,7 @@ class Signup extends Component {
 
   signupPressButton() {
     const { name, password, email } = this.state;
-    Axios.post(`${server}/user/signup`, {
+    Axios.post(`${server}/users/signup`, {
       data: {
         name,
         password,

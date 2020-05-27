@@ -12,29 +12,13 @@ import HeaderLeft from '../Headers/CustomHeader_Left';
 import HeaderRight from '../Headers/CustomHeader_Right';
 import { server } from '../utils/server';
 
-class Main extends Component {
-  constructor({ navigation }) {
-    super(navigation);
+class Board extends Component {
+  constructor(props) {
+    super(props);
+    console.log('props');
     this.state = {
-      BoardList: [],
+      BoardList: props.route.params.data,
     };
-  }
-
-  componentDidMount() {
-    this.setState({
-      BoardList: boardlist,
-    });
-    axios.get(`${server}/board/list`, { headers: { authorization: this.props.token } })
-      .then((res) => {
-        if (res.status >= 200) {
-          this.setState({
-            BoardList: boardlist,
-          });
-        }
-      })
-      .catch(() => {
-        console.log("에렁")
-      });
   }
 
   longPressButton = () => {
@@ -98,4 +82,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ token }) => ({
   token,
 });
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps)(Board);

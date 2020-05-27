@@ -41,7 +41,7 @@ class InBoard extends Component {
   }
 
   render() {
-    console.log('InBoard', this.props.route.params);
+    console.log('InBoard', this.props.route);
     const { id, name } = this.props.route.params;
     console.log('InBoard', name);
     return (
