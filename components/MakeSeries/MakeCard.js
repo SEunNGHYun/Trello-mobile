@@ -23,7 +23,7 @@ class MakeCard extends Component {
     super(props);
     this.state = {
       boardTitles: [],
-      containerTitiles: [],
+      containerTitles: [],
       containerID: null,
       enabled: false,
       cardContents: {},
@@ -38,16 +38,16 @@ class MakeCard extends Component {
   }
 
   getBoardTitle = () => {
-    this.setState({
-      ...this.state,
-      boardTitles: boardslist,
-    });
     axios.get(`${server}/boards`, { headers: { authorization: this.props.token } })
       .then((res) => {
         if (res.status > 200) {
+          const boardTitles = res.data.list.map((obj) => ({
+            label: obj.title,
+            value: obj.id,
+          }));
           this.setState({
             ...this.state,
-            boardTitles: res.data.boardsTitles,
+            boardTitles,
           });
         }
       });
@@ -58,15 +58,18 @@ class MakeCard extends Component {
     this.setState({
       enabled: false,
     });
-    // axios.get(`${server}/container?board_id=${id}`, { headers: { authorization: this.props.token } })
-    //   .then((res) => {
-    //     if (res.status === 200) {
-    //       this.setState({
-    //         ...this.state,
-    //         containerTitiles: res.data,
-    //       });
-    //     }
-    //   });
+    axios.get(`${server}/containers/${id}`, { headers: { authorization: this.props.token } })
+      .then((res) => {
+        console.log(res.data);
+        const containerTitles = res.data.result.map((obj) => ({
+          label: obj.title,
+          value: obj.id,
+        }));
+        this.setState({
+          ...this.state,
+          containerTitles,
+        });
+      });
   }
 
   saveContainerId = (ContainerID) => {
@@ -83,7 +86,7 @@ class MakeCard extends Component {
   }
 
   render() {
-    console.log('board', this.state.enabled);
+    console.log('board', this.state.boardTitles);
     return (
             <View style={styles.total}>
               <Header
@@ -98,7 +101,7 @@ class MakeCard extends Component {
                 </Text>
                 <RNPickerSelect
                 onValueChange={(pick) => this.getContainers(pick)}
-                items={boardslist}
+                items={this.state.boardTitles}
                 placeholder={{ label: 'select Board', value: null }} />
               <Text style={styles.containerText}>
                   Select Container

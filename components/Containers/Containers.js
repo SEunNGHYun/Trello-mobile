@@ -19,24 +19,31 @@ class Container extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${server}/cotainer/board_id=${this.props.boardId}`)
+    axios.get(`${server}/cards/list/${this.props.boardId}`, { headers: { authorization: this.props.token } })
       .then((res) => {
         this.setState({ CardList: res.data.cards, container_id: res.data.id });
       });
   }
 
   giveCardData = () => {
-    const cardData = this.state.CardList.concat([{ title: this.state.AddCardTitle }]);
-    this.setState({
-      CardList: cardData,
-      AddCardTitle: '',
-      AddCardBool: false,
-    });
+    const cardTitle = { title: this.state.AddCardTitle };
+    axios.post(`${server}/cards/${this.props.boardId}`, cardTitle, { headers: { authorization: this.props.token } })
+      .then((res) => {
+        console.log('Res', res.data);
+        if (res.status > 200) {
+          this.setState({
+            ...this.state,
+            CardList: this.state.CardList.concat(res.data),
+            AddCardTitle: '',
+            container_id: res.data.id,
+          });
+        }
+      });
   }
 
   render() {
     const { contain } = this.props;
-    console.log('contain', this.props.token);
+    console.log('contain');
     return (
       <View style={styles.Container}>
         <View style={styles.Contianer_title_Icon}>
@@ -53,7 +60,7 @@ class Container extends Component {
         </View>
         <ScrollView
         style={this.state.CardList.length === 0 ? styles.Length_is_Zero : styles.Length_is_over_Zero}>
-          {this.state.CardList.map((card) => (
+          {this.state.CardList.length > 0 && this.state.CardList.map((card) => (
             <TouchableOpacity
             key={card.id ? card.id : card.title}
             style={styles.One_Card_list}

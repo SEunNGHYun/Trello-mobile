@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView,
+  View, StyleSheet, ScrollView,
 } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -21,10 +21,12 @@ class InBoard extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${server}/container?board_id=${this.props.id}`, { headers: { authorization: this.props.token } })
+    console.log('this.props.id', this.props.route.params);
+    axios.get(`${server}/containers/${this.props.route.params.id}`, { headers: { authorization: this.props.token } })
       .then((Res) => {
+        console.log('REs', Res.data);
         this.setState({
-          Containers: Res.data,
+          Containers: Res.data.list.result,
         });
       })
       .catch(() => {
@@ -43,7 +45,7 @@ class InBoard extends Component {
   render() {
     console.log('InBoard', this.props.route);
     const { id, name } = this.props.route.params;
-    console.log('InBoard', name);
+    console.log('InBoard', id);
     return (
         <View>
           <Header
@@ -58,7 +60,7 @@ class InBoard extends Component {
           style={styles.Conatiners}>
             { this.state.Containers.length > 0
               && (<View style={styles.Conatiners}>{this.state.Containers.map((container) => <Container navigation={this.props.navigation} contain={container} boardId={id} />)}</View>)}
-              <MakeContainer boardId={id} ContainerTitle={this.addContainer} />
+              <MakeContainer boardId={id} addContainer={this.addContainer} />
           </ScrollView>
         </View>
     );

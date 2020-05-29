@@ -7,10 +7,14 @@ import { connect } from 'react-redux';
 import { server } from '../utils/server';
 
 class MakeContainers extends React.Component {
-  state = {
-    addtoggle: false,
-    containerTitle: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      addtoggle: false,
+      containerTitle: '',
+    };
   }
+
 
   toggleAdd =() => {
     this.setState({
@@ -26,24 +30,25 @@ class MakeContainers extends React.Component {
   }
 
   MakeContainer = () => {
-    console.log('enter Press');
+    console.log('enter Press', this.props.boardId);
     const containerContents = { title: this.state.containerTitle };
     if (containerContents.title.length > 0) {
       this.setState({
         addtoggle: false,
         containerTitle: '',
       });
-      this.props.ContainerTitle(containerContents);
+      axios.post(`${server}/containers/${this.props.boardId}`, containerContents, { headers: { authorization: this.props.token } })
+        .then((Res) => {
+          if (Res.status > 200) {
+            this.props.addContainer(Res.data.create);
+          }
+        });
     } else {
       this.setState({
         ...this.state,
         addtoggle: false,
       });
     }
-    // axios.post(`${server}/container/create?board_id=${this.props.boardId}`, containerContents)
-    //   .then((Res) => {
-
-    //   });
   }
 
   render() {
