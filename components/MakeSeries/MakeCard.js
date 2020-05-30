@@ -8,13 +8,10 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Input, Icon, Header } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
-import {
-  SaveCardName, SaveCardDescription, SaveCardDate, SaveContainerID,
-} from '../Redux/Reducer';
+import { SaveCardDate } from '../Redux/Reducer';
 import HeaderLeft from '../Headers/MakePageHeaders_L';
 import HeaderRight from '../Headers/MakePageHeaders_R';
 import { server } from '../utils/server';
-import { boardslist } from '../fakedata';
 import ModelContents from './Picker_Date';
 
 
@@ -26,9 +23,10 @@ class MakeCard extends Component {
       containerTitles: [],
       containerID: null,
       enabled: false,
-      cardContents: {},
+      ableCardToss: false,
       dateModal: false,
-      makeIconDisable: false,
+      contents: '',
+      name: '',
     };
   }
 
@@ -48,19 +46,16 @@ class MakeCard extends Component {
           this.setState({
             ...this.state,
             boardTitles,
+            enabled: false,
           });
         }
       });
   }
 
 
-  getContainers = (id) => {
-    this.setState({
-      enabled: false,
-    });
-    axios.get(`${server}/containers/${id}`, { headers: { authorization: this.props.token } })
+  getContainers = (boardid) => {
+    axios.get(`${server}/containers/${boardid}`, { headers: { authorization: this.props.token } })
       .then((res) => {
-        console.log(res.data);
         const containerTitles = res.data.result.map((obj) => ({
           label: obj.title,
           value: obj.id,
@@ -72,21 +67,34 @@ class MakeCard extends Component {
       });
   }
 
-  saveContainerId = (ContainerID) => {
+  saveContainerId = (containerID) => {
     this.setState({
-      useSelectContainer: true,
+      ...this.state,
+      containerID,
+      ableCardToss: true,
     });
-    this.ChangeIconDisable();
   }
 
-  ChangeIconDisable = () => {
+  TossCardDetail = () => {
+    console.log('date', this.props.cardDate);
+    console.log('TossCardDetail click');
+    const { contents, title } = this.state;
+    axios.post(`${server}/cards/${this.state.containerID}`, { title, contents }, { headers: { authorization: this.props.token } })
+      .then((res) => {
+        console.log('RES', res);
+        if (res.status > 200) {
+          this.props.navigation.navigate('Board');
+        }
+      });
+  }
+
+  SaveCardDetail = (key, value) => {
     this.setState({
-      enabled: true,
+      [key]: value,
     });
   }
 
   render() {
-    console.log('board', this.state.boardTitles);
     return (
             <View style={styles.total}>
               <Header
@@ -94,7 +102,7 @@ class MakeCard extends Component {
                 height: 55, width: '100%',
               }}
               leftComponent={<HeaderLeft title="Create Card" navigation={this.props.navigation} />}
-              rightComponent={<HeaderRight navigation={this.props.navigation} able={this.state.enabled} where="Card" Change={this.ChangeIconDisable} />} />
+              rightComponent={<HeaderRight able={this.state.ableCardToss} where="Card" CardToss={this.TossCardDetail} />} />
               <View style={styles.selectBox}>
                 <Text>
                   Select Board
@@ -109,7 +117,7 @@ class MakeCard extends Component {
               <RNPickerSelect
                 disabled={this.state.enabled}
                 onValueChange={(pick) => this.saveContainerId(pick)}
-                items={boardslist}
+                items={this.state.containerTitles}
                 placeholder={{ label: 'select Container', value: null }} />
               </View>
               <View style={{ flex: 1, marginBottom: 50 }} />
@@ -121,10 +129,10 @@ class MakeCard extends Component {
                   style={styles.InputData}>
                     <Input
                     placeholder="Card Name"
-                    onChangeText={this.props.SaveCardName} />
+                    onChangeText={(title) => this.SaveCardDetail('title', title)} />
                     <Input
                     placeholder="Card Description"
-                    onChangeText={this.props.SaveCardDescription} />
+                    onChangeText={(des) => this.SaveCardDetail('contents', des)} />
                     <TouchableOpacity
                     style={styles.calendar}
                     onPress={() => this.setState({ dateModal: !this.state.dateModal })}>
@@ -184,19 +192,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ token }) => ({
+const mapStateToProps = ({ token, cardDate }) => ({
   token,
+  cardDate,
 });
 const mapDispatchToProps = (dispatch) => ({
-  SaveCardName: (name) => {
-    dispatch(SaveCardName(name));
-  },
-  SaveCardDescription: (description) => {
-    dispatch(SaveCardDescription(description));
-  },
-  SaveContainerId: (CotainerId) => {
-    dispatch(SaveContainerID(CotainerId));
-  },
   SaveCardDate: (date) => {
     dispatch(SaveCardDate(date));
   },

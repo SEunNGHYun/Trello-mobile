@@ -31,7 +31,7 @@ class MakeContainers extends React.Component {
 
   MakeContainer = () => {
     console.log('enter Press', this.props.boardId);
-    const containerContents = { title: this.state.containerTitle };
+    const containerContents = { title: this.state.containerTitle   };
     if (containerContents.title.length > 0) {
       this.setState({
         addtoggle: false,

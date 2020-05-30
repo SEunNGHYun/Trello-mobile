@@ -19,23 +19,22 @@ class Container extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${server}/cards/list/${this.props.boardId}`, { headers: { authorization: this.props.token } })
+    axios.get(`${server}/cards/list/${this.props.contain.id}`, { headers: { authorization: this.props.token } })
       .then((res) => {
-        this.setState({ CardList: res.data.cards, container_id: res.data.id });
+        this.setState({ CardList: res.data.CardList, container_id: res.data.CardList.containerId });
       });
   }
 
   giveCardData = () => {
-    const cardTitle = { title: this.state.AddCardTitle };
-    axios.post(`${server}/cards/${this.props.boardId}`, cardTitle, { headers: { authorization: this.props.token } })
+    const card = { title: this.state.AddCardTitle, contents: '' };
+    axios.post(`${server}/cards/${this.props.contain.id}`, card, { headers: { authorization: this.props.token } })
       .then((res) => {
-        console.log('Res', res.data);
-        if (res.status > 200) {
+        if (res.data.result) {
           this.setState({
             ...this.state,
-            CardList: this.state.CardList.concat(res.data),
+            CardList: this.state.CardList.concat([res.data.result]),
             AddCardTitle: '',
-            container_id: res.data.id,
+            container_id: res.data.result.containerId,
           });
         }
       });
@@ -43,7 +42,6 @@ class Container extends Component {
 
   render() {
     const { contain } = this.props;
-    console.log('contain');
     return (
       <View style={styles.Container}>
         <View style={styles.Contianer_title_Icon}>
@@ -64,7 +62,7 @@ class Container extends Component {
             <TouchableOpacity
             key={card.id ? card.id : card.title}
             style={styles.One_Card_list}
-            onPress={() => this.props.navigation.navigate('Card_Detail', { title: card.title, container_id: this.state.container_id })}>
+            onPress={() => this.props.navigation.navigate('Card_Detail', { title: card.title, container_id: this.state.containerId })}>
               <Text style={{ fontSize: 20 }}>{card.title}</Text>
             </TouchableOpacity>
           ))}
