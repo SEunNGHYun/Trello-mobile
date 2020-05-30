@@ -5,18 +5,14 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 function MakePageHeader_R({
-  able, navigation, where, Change, title, create,
+  able, where, title, create, CardToss,
 }) {
-  function MakeCardFunc() {
-    console.log('CARd 만듬');
-    Change();
-    navigation.navigate('Board');
-  }
   return (
+    console.log('MakeCardFunc', able, where),
         <TouchableOpacity
         style={styles.Done}
         enabled={where === 'Board' ? title.length > 0 : able}
-        onPress={where === 'Board' ? create : MakeCardFunc}>
+        onPress={where === 'Board' ? create : CardToss}>
           <Icon type="material" name="done" color={where === 'Board' ? (title.length > 0 ? 'white' : 'gray') : (able ? 'white' : 'gray')} />
         </TouchableOpacity>
   );

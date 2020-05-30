@@ -6,12 +6,10 @@ import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Button } from 'react-native-elements';
-import Axios from 'axios';
 import { SaveCardDate } from '../Redux/Reducer';
 import {
-  today, tomorrow, nextWeek, nextWeekDay,
+  today, tomorrow, nextWeek, nextWeekDay 
 } from '../utils/Date';
-import { server } from '../utils/server';
 
 class Picker_Date extends Component {
   constructor(props) {
@@ -61,7 +59,6 @@ class Picker_Date extends Component {
 
   cardDataToss = () => {
     const cardData = { date: this.state.saveDate, time: this.state.saveTime, alarm: this.state.saveAlarm };
-
     this.props.SaveCardDate(cardData);
     this.props.closeModal();
   }

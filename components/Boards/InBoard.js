@@ -26,7 +26,7 @@ class InBoard extends Component {
       .then((Res) => {
         console.log('REs', Res.data);
         this.setState({
-          Containers: Res.data.list.result,
+          Containers: Res.data.result,
         });
       })
       .catch(() => {
