@@ -32,12 +32,10 @@ class MakeBoard extends Component {
   }
 
   createBoard = () => {
-    console.log('클뤽', this.state.Disclosure);
     const Title = { title: this.state.Boardtitle, visibility: this.state.Disclosure };
     axios.post(`${server}/boards`, Title, { headers: { authorization: this.props.token } })
       .then((res) => {
         if (res.status >= 200) {
-          console.log(res.data.id);
           this.props.navigation.navigate('InBoard', { id: res.data.id, name: res.data.title });
         }
       });

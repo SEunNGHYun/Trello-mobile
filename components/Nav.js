@@ -61,7 +61,6 @@ class Nav extends Component {
   }
 
   render() {
-    console.log(' this.props.Login', this.props.Login);
     return (
       <NavigationContainer>
       <SafeAreaProvider>

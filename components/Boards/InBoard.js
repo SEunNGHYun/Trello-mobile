@@ -21,21 +21,20 @@ class InBoard extends Component {
   }
 
   componentDidMount() {
-    console.log('this.props.id', this.props.route.params);
     axios.get(`${server}/containers/${this.props.route.params.id}`, { headers: { authorization: this.props.token } })
       .then((Res) => {
-        console.log('REs', Res.data);
-        this.setState({
-          Containers: Res.data.result,
-        });
+        if (Res.status >= 200) {
+          this.setState({
+            Containers: Res.data.result,
+          });
+        }
       })
       .catch(() => {
-        console.log('에렁');
+        console.log('보드에서 에렁');
       });
   }
 
   addContainer= (createObj) => {
-    console.log('createObj', createObj);
     const titles = this.state.Containers.concat([createObj]);
     this.setState({
       Containers: titles,
@@ -43,9 +42,7 @@ class InBoard extends Component {
   }
 
   render() {
-    console.log('InBoard', this.props.route);
     const { id, name } = this.props.route.params;
-    console.log('InBoard', id);
     return (
         <View>
           <Header
