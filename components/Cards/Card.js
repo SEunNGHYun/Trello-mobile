@@ -39,7 +39,7 @@ class Card_detail extends Component {
     axios.get(`${server}/card/container_id=${this.props.container_id}`, { headers: { authorization: this.props.token } })
       .then((res) => this.setState({ describe: res.data.describe }))
       .catch(() => {
-        console.log('에렁');
+         ('에렁');
       });
   }
 
@@ -55,7 +55,6 @@ class Card_detail extends Component {
   }
 
   choiceLable = (lable) => {
-    console.log('lav', lable);
     const lables = this.state.ChoiceLable.concat([lable]);
     this.setState({
       ChoiceLable: lables,
@@ -63,7 +62,6 @@ class Card_detail extends Component {
   }
 
   CheckIcon = (title) => {
-    console.log('title', title);
     const newCheklist = this.state.Checklist.map((list) => {
       if (list.title === title) {
         list.checked = !list.checked;

@@ -26,7 +26,7 @@ class MakeCard extends Component {
       ableCardToss: false,
       dateModal: false,
       contents: '',
-      name: '',
+      title: '',
     };
   }
 
@@ -68,33 +68,51 @@ class MakeCard extends Component {
   }
 
   saveContainerId = (containerID) => {
+    console.log('containerid', containerID);
     this.setState({
       ...this.state,
       containerID,
-      ableCardToss: true,
     });
   }
 
   TossCardDetail = () => {
-    console.log('date', this.props.cardDate);
-    console.log('TossCardDetail click');
-    const { contents, title } = this.state;
-    axios.post(`${server}/cards/${this.state.containerID}`, { title, contents }, { headers: { authorization: this.props.token } })
+    let Card = { title: this.state.title, content: this.state.contents };
+    if (this.props.cardDate.alarm) {
+      Card.time = this.props.cardDate.time;
+      Card.date = this.props.cardDate.date;
+    }
+    axios.post(`${server}/cards/${this.state.containerID}`, Card, { headers: { authorization: this.props.token } })
       .then((res) => {
-        console.log('RES', res);
-        if (res.status > 200) {
+        console.log('이동 각11', res.status);
+        if (res.status >= 200) {
+          console.log('이동 각22');
           this.props.navigation.navigate('Board');
         }
       });
   }
 
   SaveCardDetail = (key, value) => {
-    this.setState({
-      [key]: value,
-    });
+    if (key === 'title') {
+      if (value !== '') {
+        this.setState({
+          [key]: value,
+          ableCardToss: true,
+        });
+      } else {
+        this.setState({
+          [key]: value,
+          ableCardToss: false,
+        });
+      }
+    } else {
+      this.setState({
+        [key]: value,
+      });
+    }
   }
 
   render() {
+    console.log('date', this.state.title);
     return (
             <View style={styles.total}>
               <Header

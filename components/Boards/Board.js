@@ -10,12 +10,10 @@ import BoardsTitle from './Boardtitle';
 import { boardlist } from '../fakedata';
 import HeaderLeft from '../Headers/CustomHeader_Left';
 import HeaderRight from '../Headers/CustomHeader_Right';
-import { server } from '../utils/server';
 
 class Board extends Component {
   constructor(props) {
     super(props);
-    console.log('props');
     this.state = {
       BoardList: props.route.params.data,
     };
@@ -55,10 +53,10 @@ class Board extends Component {
         </View>
       </ScrollView>
         <ActionButton buttonColor="#02b625">
-          <ActionButton.Item title="Board" buttonColor="#02b625" onPress={() => this.props.navigation.navigate('Boards', { screen: 'MakeBoard' })}>
+          <ActionButton.Item title="Board" buttonColor="#02b625" onPress={() => this.props.navigation.navigate('MakeBoard')}>
             <Icon type="feather" name="layout" color="white" />
           </ActionButton.Item>
-          <ActionButton.Item title="Card" buttonColor="#02b625" onPress={() => this.props.navigation.navigate('Boards', { screen: 'MakeCard' })}>
+          <ActionButton.Item title="Card" buttonColor="#02b625" onPress={() => this.props.navigation.navigate('MakeCard')}>
             <Icon type="feather" name="trello" color="white" />
           </ActionButton.Item>
         </ActionButton>

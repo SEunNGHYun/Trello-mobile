@@ -1,14 +1,12 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 function MakePageHeader_R({
   able, where, title, create, CardToss,
 }) {
   return (
-    console.log('MakeCardFunc', able, where),
         <TouchableOpacity
         style={styles.Done}
         enabled={where === 'Board' ? title.length > 0 : able}
